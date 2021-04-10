@@ -21,4 +21,11 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 
         return new UserDetailsImpl(user);
     }
+
+    public UserDetails loadUserByEmail(String Email){
+        User user = userRepository.findByEmail(Email)
+                .orElseThrow(() -> new UsernameNotFoundException("Can't find " + Email));
+
+        return new UserDetailsImpl(user);
+    }
 }
