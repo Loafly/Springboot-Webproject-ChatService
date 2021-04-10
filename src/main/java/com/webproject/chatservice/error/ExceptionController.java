@@ -28,12 +28,12 @@ public class ExceptionController {
     private ErrorResponse makeErrorResponse(BindingResult bindingResult){
         String code = "";
         String description = "";
-        String detail = "";
+        String errorMessage = "";
 
         //에러가 있다면
         if(bindingResult.hasErrors()){
             //DTO에 설정한 meaasge값을 가져온다
-            detail = bindingResult.getFieldError().getDefaultMessage();
+            errorMessage = bindingResult.getFieldError().getDefaultMessage();
 
             //DTO에 유효성체크를 걸어놓은 어노테이션명을 가져온다.
             String bindResultCode = bindingResult.getFieldError().getCode();
@@ -63,6 +63,6 @@ public class ExceptionController {
             }
         }
 
-        return new ErrorResponse(code, description, detail);
+        return new ErrorResponse(code, description, errorMessage);
     }
 }

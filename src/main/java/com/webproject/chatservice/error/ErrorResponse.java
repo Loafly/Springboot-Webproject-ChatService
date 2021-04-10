@@ -11,16 +11,16 @@ public class ErrorResponse {
 
     private String description;
 
-    private String detail;
+    private String errorMessage;
 
     public ErrorResponse(String code, String description) {
         this.code = code;
         this.description = description;
     }
 
-    public ErrorResponse(String code, String description, String detail) {
+    public ErrorResponse(String code, String description, String errorMessage) {
         this.code = code;
         this.description = description;
-        this.detail = detail;
+        this.errorMessage = errorMessage;
     }
 }
