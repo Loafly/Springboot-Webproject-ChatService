@@ -12,6 +12,8 @@ import java.util.List;
 @RestController
 public class UserController {
 
+    //GitTest용 주석입니다
+
     private final UserService userService;
 
     public UserController(UserService userService)
