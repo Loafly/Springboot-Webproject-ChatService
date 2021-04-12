@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -65,9 +66,9 @@ public class UserController {
 
     //회원 가입시 이메일 중복체크
     @PostMapping("/api/user/signup/emailCheck")
-    public Object validCheckEmail(@RequestParam("email") String email){
+    public Object validCheckEmail(@RequestBody Map<String, Object> param){
         try{
-            userService.signupValidCheck(email);
+            userService.signupValidCheck(param.get("email").toString());
             CustomMessageResponse customMessageResponse = new CustomMessageResponse("사용 가능한 Email입니다.",HttpStatus.OK.value());
             return customMessageResponse.SendResponse();
         }
