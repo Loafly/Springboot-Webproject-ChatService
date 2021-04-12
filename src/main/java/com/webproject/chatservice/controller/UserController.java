@@ -2,7 +2,6 @@ package com.webproject.chatservice.controller;
 
 import com.webproject.chatservice.config.JwtTokenProvider;
 import com.webproject.chatservice.dto.UserLoginRequestDto;
-import com.webproject.chatservice.dto.UserSignupEamilRequestDto;
 import com.webproject.chatservice.dto.UserSignupRequestDto;
 import com.webproject.chatservice.handler.CustomMessageResponse;
 import com.webproject.chatservice.models.User;
