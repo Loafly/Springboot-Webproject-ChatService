@@ -33,13 +33,11 @@ public class UserService {
         return user.getId();
     }
 
-    public User signupValidCheck(UserSignupRequestDto userSignupRequestDto){
-        if (userRepository.findByEmail(userSignupRequestDto.getEmail()).isPresent())
+    public void signupValidCheck(String Email){
+        if (userRepository.findByEmail(Email).isPresent())
         {
             throw new IllegalArgumentException("해당 이메일은 이미 가입된 회원이 있습니다.");
         }
-
-        return new User(userSignupRequestDto);
     }
 
     public User loginValidCheck(UserLoginRequestDto userLoginRequestDto){

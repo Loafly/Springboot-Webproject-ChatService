@@ -2,6 +2,7 @@ package com.webproject.chatservice.controller;
 
 import com.webproject.chatservice.config.JwtTokenProvider;
 import com.webproject.chatservice.dto.UserLoginRequestDto;
+import com.webproject.chatservice.dto.UserSignupEamilRequestDto;
 import com.webproject.chatservice.dto.UserSignupRequestDto;
 import com.webproject.chatservice.handler.CustomMessageResponse;
 import com.webproject.chatservice.models.User;
@@ -16,8 +17,6 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @RestController
 public class UserController {
-
-    //GitTest용 주석입니다
 
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
@@ -53,8 +52,24 @@ public class UserController {
     @PostMapping("/api/user/signup")
     public Object registerUsers(@Valid @RequestBody UserSignupRequestDto userSignupRequestDto){
         try{
-            User user = userService.signupValidCheck(userSignupRequestDto);
+            userService.signupValidCheck(userSignupRequestDto.getEmail());
+            User user = new User(userSignupRequestDto);
             return userService.registerUser(user);
+        }
+        catch (Exception ignore)
+        {
+            CustomMessageResponse customMessageResponse = new CustomMessageResponse(ignore.getMessage(),HttpStatus.BAD_REQUEST.value());
+            return customMessageResponse.SendResponse();
+        }
+    }
+
+    //회원 가입시 이메일 중복체크
+    @PostMapping("/api/user/signup/emailCheck")
+    public Object validCheckEmail(@RequestParam("email") String email){
+        try{
+            userService.signupValidCheck(email);
+            CustomMessageResponse customMessageResponse = new CustomMessageResponse("사용 가능한 Email입니다.",HttpStatus.OK.value());
+            return customMessageResponse.SendResponse();
         }
         catch (Exception ignore)
         {
