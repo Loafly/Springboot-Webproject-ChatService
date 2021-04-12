@@ -15,14 +15,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/sub");
-        config.setApplicationDestinationPrefixes("/pub");
+        config.enableSimpleBroker("/sub"); // prefix /sub 로 수신 메시지 구분
+        config.setApplicationDestinationPrefixes("/pub"); // prefix /pub 로 발행 요청
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws-stomp").setAllowedOrigins("*") // url/ws-stomp 웹 소켓 연결 주소
-                .withSockJS(); // sock.js를 통하여 낮은 버전의 브라우저에서도 websocket이 동작할수 있게 합니다.
+        registry.addEndpoint("/chatting").setAllowedOrigins("*") // url/chatting 웹 소켓 연결 주소
+                .withSockJS(); // sock.js를 통하여 낮은 버전의 브라우저에서도 websocket 이 동작할수 있게 합니다.
     }
 
 }
