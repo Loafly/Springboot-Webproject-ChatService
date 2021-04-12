@@ -83,4 +83,10 @@ public class UserController {
     public User updateUsers(@Valid @RequestBody UserSignupRequestDto userSignupRequestDto){
         return null;
     }
+
+    //회원 삭제
+    @PutMapping("/api/user/delete")
+    public Long deleteUsers(@RequestBody Map<String, Object> param){
+        return userService.deleteUser((Long) param.get("id"));
+    }
 }
