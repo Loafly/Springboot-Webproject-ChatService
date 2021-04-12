@@ -23,7 +23,7 @@ public class ChatRoomController {
         return chatRoomService.getAllChatRooms();
     }
 
-    @PutMapping("/rooms")
+    @PostMapping("/rooms")
     public ChatRoom createChatRoom(@RequestBody ChatRoomRequestDto requestDto) {
         requestDto.getChatRoomName();
         ChatRoom chatRoom = chatRoomService.createChatRoom(requestDto);
