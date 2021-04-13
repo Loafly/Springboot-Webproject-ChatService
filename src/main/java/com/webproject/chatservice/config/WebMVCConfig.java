@@ -15,10 +15,4 @@ public class WebMVCConfig implements WebMvcConfigurer {
         registrationBean.addUrlPatterns("/api/*");
         return registrationBean;
     }
-
-    // CORS 추가
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedOrigins("*://*");
-    }
 }

@@ -80,8 +80,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return source;
     }
 
-    @Bean
-    public CorsFilter corsFilter() throws Exception {
-        return new CorsFilter();
-    }
 }
