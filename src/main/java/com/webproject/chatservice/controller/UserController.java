@@ -8,8 +8,7 @@ import com.webproject.chatservice.handler.CustomMessageResponse;
 import com.webproject.chatservice.models.User;
 import com.webproject.chatservice.models.UserDetailsImpl;
 import com.webproject.chatservice.service.UserService;
-import jdk.nashorn.internal.parser.JSONParser;
-import org.json.JSONObject;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
