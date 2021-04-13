@@ -13,12 +13,16 @@ public class WebMVCConfig implements WebMvcConfigurer {
     public FilterRegistrationBean getFilterRegistrationBean(){
         FilterRegistrationBean registrationBean = new FilterRegistrationBean(new CORSFilter());
         registrationBean.addUrlPatterns("/api/*");
+        registrationBean.addUrlPatterns("/**");
         return registrationBean;
     }
 
     // CORS 추가
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedOrigins("*://*");
+        registry.addMapping("/**")
+                .allowedOrigins("*://*")
+                .allowedHeaders("*")
+                .allowedMethods("*");
     }
 }
