@@ -5,9 +5,11 @@ import com.webproject.chatservice.dto.UserLoginRequestDto;
 import com.webproject.chatservice.dto.UserSignupRequestDto;
 import com.webproject.chatservice.handler.CustomMessageResponse;
 import com.webproject.chatservice.models.User;
+import com.webproject.chatservice.models.UserDetailsImpl;
 import com.webproject.chatservice.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -29,7 +31,12 @@ public class UserController {
 
     //회원 조회
     @GetMapping("/api/users")
-    public List<User> getUser(){
+    public List<User> getUser(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        System.out.println("email = " + userDetails.getUser().getEmail());
+        System.out.println("username = " + userDetails.getUser().getUsername());
+        System.out.println("password = " + userDetails.getUser().getPassword());
+        System.out.println("id = " + userDetails.getUser().getId());
+        System.out.println("role = " + userDetails.getUser().getRole());
         return userService.findAll();
     }
 
