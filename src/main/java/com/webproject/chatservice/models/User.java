@@ -1,6 +1,5 @@
 package com.webproject.chatservice.models;
 
-import com.webproject.chatservice.dto.UserLoginRequestDto;
 import com.webproject.chatservice.dto.UserSignupRequestDto;
 import lombok.Data;
 import lombok.Getter;

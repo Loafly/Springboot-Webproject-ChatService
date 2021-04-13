@@ -1,5 +1,6 @@
 package com.webproject.chatservice.controller;
 
+import com.google.gson.JsonObject;
 import com.webproject.chatservice.config.JwtTokenProvider;
 import com.webproject.chatservice.dto.UserLoginRequestDto;
 import com.webproject.chatservice.dto.UserSignupRequestDto;
@@ -7,6 +8,8 @@ import com.webproject.chatservice.handler.CustomMessageResponse;
 import com.webproject.chatservice.models.User;
 import com.webproject.chatservice.models.UserDetailsImpl;
 import com.webproject.chatservice.service.UserService;
+import jdk.nashorn.internal.parser.JSONParser;
+import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -46,7 +49,12 @@ public class UserController {
     {
         try{
             User user = userService.loginValidCheck(userLoginRequestDto);
-            return ResponseEntity.ok().body("token : " + jwtTokenProvider.createToken(user.getEmail()));
+
+            JsonObject jsonObj = new JsonObject();
+            jsonObj.addProperty("token", jwtTokenProvider.createToken(user.getEmail()));
+            jsonObj.addProperty("username", user.getUsername());
+
+            return ResponseEntity.ok().body(jsonObj.toString());
         }
         catch (Exception ignore)
         {
