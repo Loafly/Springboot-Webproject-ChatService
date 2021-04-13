@@ -26,5 +26,4 @@ public class ChatMessage {
         this.sender = sender;
         this.message = message;
     }
-
 }
