@@ -24,7 +24,6 @@ public class StompHandler implements ChannelInterceptor {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final ChatRoomService chatRoomService;
-    private final ChatRoomRepository chatRoomRepository;
     private final ChatService chatService;
 
     @Override
