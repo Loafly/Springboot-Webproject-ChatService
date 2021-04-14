@@ -24,6 +24,7 @@ public class RedisSubscriber {
             ChatMessage chatMessage = objectMapper.readValue(publishMessage, ChatMessage.class);
             // 채팅방을 구독한 클라이언트에게 메시지 발송
             messagingTemplate.convertAndSend("/sub/api/chat/rooms/" + chatMessage.getRoomId(), chatMessage);
+
             // 여기가 바로 채팅 메시지 value 값입니다!!
 //            ChatMessage message = new ChatMessage();
 //            message.setType(chatMessage.getType());
@@ -33,6 +34,7 @@ public class RedisSubscriber {
 //            message.setMessage(chatMessage.getMessage());
 //            chatMessageRepository.save(message);
             System.out.println("hello world");
+            System.out.println(chatMessage.getMessage());
         } catch (Exception e) {
             log.error("Exception {}", e);
         }

@@ -5,7 +5,6 @@ import com.webproject.chatservice.models.User;
 import com.webproject.chatservice.repository.UserRepository;
 import com.webproject.chatservice.utils.MailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -72,7 +71,7 @@ public class UserService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
 
-        user.setPassword(password);
+        user.setPassword(passwordEncoder.encode(password));
         return user.getId();
     }
 
