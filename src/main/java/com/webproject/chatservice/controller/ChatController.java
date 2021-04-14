@@ -29,7 +29,11 @@ public class ChatController {
         message.setSender(userDetails.getUsername());
         // 로그인 회원 정보로 유저 이메일 설정
         message.setSenderEmail(userDetails.getUser().getEmail());
-        System.out.println(message);
+        System.out.println(message.getType());
+        System.out.println(message.getRoomId());
+        System.out.println(message.getSender());
+        System.out.println(message.getSenderEmail());
+        System.out.println(message.getMessage());
         chatService.sendChatMessage(message);
         chatService.save(message);
     }
