@@ -103,4 +103,10 @@ public class UserController {
     public Long deleteUsers(@RequestBody Map<String, Object> param){
         return userService.deleteUser((Long) param.get("id"));
     }
+
+    @PostMapping("/api/user/findPassword")
+    public Long findPasswordByEamil(@RequestBody Map<String, Object> param){
+        userService.findPasswordByEamil(param.get("email").toString());
+        return null;
+    }
 }
