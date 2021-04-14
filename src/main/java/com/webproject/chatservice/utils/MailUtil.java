@@ -2,7 +2,6 @@ package com.webproject.chatservice.utils;
 
 import com.webproject.chatservice.models.User;
 import org.apache.commons.mail.HtmlEmail;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Random;
 

@@ -34,7 +34,7 @@ public class RedisSubscriber {
 //            message.setMessage(chatMessage.getMessage());
 //            chatMessageRepository.save(message);
             System.out.println("hello world");
-            System.out.println(chatMessage.getMessage());
+            System.out.println("chatMessage.getMessage() = " + chatMessage.getMessage());
         } catch (Exception e) {
             log.error("Exception {}", e);
         }

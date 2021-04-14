@@ -1,5 +1,6 @@
 package com.webproject.chatservice.models;
 
+import com.webproject.chatservice.dto.ChatMessageRequestDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -42,5 +43,14 @@ public class ChatMessage {
         this.sender = sender;
         this.senderEmail = senderEmail;
         this.message = message;
+    }
+
+    @Builder
+    public ChatMessage(ChatMessageRequestDto chatMessageRequestDto) {
+        this.type = chatMessageRequestDto.getType();
+        this.roomId = chatMessageRequestDto.getRoomId();
+        this.sender = chatMessageRequestDto.getSender();
+        this.senderEmail = chatMessageRequestDto.getSenderEmail();
+        this.message = chatMessageRequestDto.getMessage();
     }
 }

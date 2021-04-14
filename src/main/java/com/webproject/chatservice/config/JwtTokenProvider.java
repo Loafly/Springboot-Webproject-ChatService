@@ -1,5 +1,7 @@
 package com.webproject.chatservice.config;
 
+import com.webproject.chatservice.models.User;
+import com.webproject.chatservice.models.UserDetailsImpl;
 import com.webproject.chatservice.service.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -8,6 +10,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -53,6 +56,19 @@ public class JwtTokenProvider {
 //        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
         UserDetails userDetails = userDetailsServiceImpl.loadUserByEmail(this.getUserPk(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    }
+
+    // JWT 토큰에서 User 가져오기
+    public User getAuthenticationUser(String token){
+        UserDetailsImpl userDetails = userDetailsServiceImpl.loadUserByEmail(this.getUserPk(token));
+        return userDetails.getUser();
+    }
+
+    // JWT 토큰에서 username 조회
+    public String getAuthenticationUsername(String token) {
+//        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
+        UserDetails userDetails = userDetailsServiceImpl.loadUserByEmail(this.getUserPk(token));
+        return userDetails.getUsername();
     }
 
     // 토큰에서 회원 정보 추출
