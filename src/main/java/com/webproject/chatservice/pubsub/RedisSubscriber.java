@@ -32,7 +32,7 @@ public class RedisSubscriber {
 //            message.setSenderEmail(chatMessage.getSenderEmail());
 //            message.setMessage(chatMessage.getMessage());
 //            chatMessageRepository.save(message);
-
+            System.out.println("hello world");
         } catch (Exception e) {
             log.error("Exception {}", e);
         }

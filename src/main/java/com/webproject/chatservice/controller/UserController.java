@@ -105,8 +105,29 @@ public class UserController {
     }
 
     @PostMapping("/api/user/findPassword")
-    public String findPasswordByEamil(@RequestBody Map<String, Object> param){
-        int CertificationNumber = userService.findPasswordByEamil(param.get("email").toString());
-        return Integer.toString(CertificationNumber);
+    public Object findPasswordByEamil(@RequestBody Map<String, Object> param){
+        try
+        {
+            int CertificationNumber = userService.findPasswordByEamil(param.get("email").toString());
+
+            JsonObject jsonObj = new JsonObject();
+            jsonObj.addProperty("CertificationNumber", Integer.toString(CertificationNumber));
+
+            return ResponseEntity.ok().body(jsonObj.toString());
+        }
+        catch (Exception ignore)
+        {
+            CustomMessageResponse customMessageResponse = new CustomMessageResponse(ignore.getMessage(),HttpStatus.BAD_REQUEST.value());
+            return customMessageResponse.SendResponse();
+        }
+
+    }
+
+    @PutMapping("/api/user/changePassword")
+    public Long updateUserPassword(@RequestBody Map<String, Object> param){
+        String email = param.get("email").toString();
+        String password = param.get("password").toString();
+
+        return userService.updateUserPassword(email,password);
     }
 }
