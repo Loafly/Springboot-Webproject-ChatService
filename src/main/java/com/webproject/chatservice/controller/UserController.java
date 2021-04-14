@@ -105,8 +105,8 @@ public class UserController {
     }
 
     @PostMapping("/api/user/findPassword")
-    public Long findPasswordByEamil(@RequestBody Map<String, Object> param){
-        userService.findPasswordByEamil(param.get("email").toString());
-        return null;
+    public String findPasswordByEamil(@RequestBody Map<String, Object> param){
+        int CertificationNumber = userService.findPasswordByEamil(param.get("email").toString());
+        return Integer.toString(CertificationNumber);
     }
 }
