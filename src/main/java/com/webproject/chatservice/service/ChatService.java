@@ -1,6 +1,7 @@
 package com.webproject.chatservice.service;
 
 import com.webproject.chatservice.models.ChatMessage;
+import com.webproject.chatservice.repository.ChatMessageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
@@ -12,6 +13,7 @@ public class ChatService {
 
     private final ChannelTopic channelTopic;
     private final RedisTemplate redisTemplate;
+    private final ChatMessageRepository chatMessageRepository;
 
     // destination 정보에서 roomId 추출
     public String getRoomId(String destination) {
@@ -32,6 +34,16 @@ public class ChatService {
             chatMessage.setSender("[알림]");
         }
         redisTemplate.convertAndSend(channelTopic.getTopic(), chatMessage);
+    }
+
+    public void save(ChatMessage chatMessage) {
+        ChatMessage message = new ChatMessage();
+        message.setType(chatMessage.getType());
+        message.setRoomId(chatMessage.getRoomId());
+        message.setSender(chatMessage.getSender());
+        message.setSenderEmail(chatMessage.getSenderEmail());
+        message.setMessage(chatMessage.getMessage());
+        chatMessageRepository.save(message);
     }
 
 }
