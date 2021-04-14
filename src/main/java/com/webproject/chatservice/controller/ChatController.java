@@ -24,7 +24,7 @@ public class ChatController {
     private final ChatService chatService;
 
     @MessageMapping("/message")
-    public void message(@RequestBody ChatMessage message, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public void message(ChatMessage message, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         // 로그인 회원 정보로 대화명 설정
         message.setSender(userDetails.getUsername());
         // 로그인 회원 정보로 유저 이메일 설정
