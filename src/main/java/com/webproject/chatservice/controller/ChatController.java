@@ -29,6 +29,7 @@ public class ChatController {
         message.setSender(userDetails.getUsername());
         // 로그인 회원 정보로 유저 이메일 설정
         message.setSenderEmail(userDetails.getUser().getEmail());
+        System.out.println(message);
         chatService.sendChatMessage(message);
         chatService.save(message);
     }
