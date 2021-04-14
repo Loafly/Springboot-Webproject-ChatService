@@ -1,8 +1,7 @@
 package com.webproject.chatservice.handler;
 
 import com.webproject.chatservice.config.JwtTokenProvider;
-import com.webproject.chatservice.dto.ChatMessage;
-import com.webproject.chatservice.repository.ChatRoomRepository;
+import com.webproject.chatservice.models.ChatMessage;
 import com.webproject.chatservice.service.ChatRoomService;
 import com.webproject.chatservice.service.ChatService;
 import lombok.RequiredArgsConstructor;

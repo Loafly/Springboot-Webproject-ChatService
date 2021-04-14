@@ -1,14 +1,14 @@
 package com.webproject.chatservice.controller;
 
 import com.webproject.chatservice.config.JwtTokenProvider;
-import com.webproject.chatservice.dto.ChatMessage;
+import com.webproject.chatservice.models.ChatMessage;
 import com.webproject.chatservice.models.User;
+import com.webproject.chatservice.models.UserDetailsImpl;
 import com.webproject.chatservice.service.ChatService;
 import com.webproject.chatservice.service.UserService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -24,13 +24,11 @@ public class ChatController {
     private final ChatService chatService;
 
     @MessageMapping("/message")
-    public void message(ChatMessage message, @RequestHeader("token") String token) {
+    public void message(ChatMessage message, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         // 로그인 회원 정보로 대화명 설정
-        String email = jwtTokenProvider.getUserPk(token);
-        Optional<User> user = userService.findByEmail(email);
-        String sender = user.get().getUsername();
-        message.setSender(sender);
-
+        message.setSender(userDetails.getUsername());
+        // 로그인 회원 정보로 유저 이메일 설정
+        message.setSenderEmail(userDetails.getUser().getEmail());
         chatService.sendChatMessage(message);
     }
 

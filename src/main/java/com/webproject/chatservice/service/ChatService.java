@@ -1,7 +1,6 @@
 package com.webproject.chatservice.service;
 
-import com.webproject.chatservice.dto.ChatMessage;
-import com.webproject.chatservice.repository.ChatRoomRepository;
+import com.webproject.chatservice.models.ChatMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
