@@ -130,4 +130,6 @@ public class UserController {
 
         return userService.updateUserPassword(email,password);
     }
+
+    // 마이페이지
 }
