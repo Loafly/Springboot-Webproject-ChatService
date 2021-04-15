@@ -17,6 +17,7 @@ import java.util.Date;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.TimeZone;
 
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
@@ -41,22 +42,13 @@ public class ChatController {
 //        message.setSenderEmail(userDetails.getUser().getEmail());
         messageRequestDto.setSenderEmail(user.getEmail());
 
+        SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm");
         Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH) + 1;
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-        int hour = cal.get(Calendar.HOUR_OF_DAY);
-        int min = cal.get(Calendar.MINUTE);
-        String AmPm = " ";
-
-        int ampm = cal.get(Calendar.AM_PM);
-        if (ampm == 0) {
-            AmPm = "오전";
-        } else if (ampm == 1) {
-            AmPm = "오후";
-        }
-
-        messageRequestDto.setCreatedAt(year + "-" + month + "-" + day + " " + AmPm + " " + hour + ":" + min);
+        Date date = cal.getTime();
+        sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+        String dateResult = sdf.format(date);
+        
+        messageRequestDto.setCreatedAt(dateResult);
 
         System.out.println(messageRequestDto.getType());
         System.out.println(messageRequestDto.getRoomId());
