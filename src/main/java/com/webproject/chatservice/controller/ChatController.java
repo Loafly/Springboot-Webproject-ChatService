@@ -42,13 +42,22 @@ public class ChatController {
         messageRequestDto.setSenderEmail(user.getEmail());
 
         Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH) + 1;
         int day = cal.get(Calendar.DAY_OF_MONTH);
         int hour = cal.get(Calendar.HOUR_OF_DAY);
         int min = cal.get(Calendar.MINUTE);
+        String AmPm = " ";
 
-        messageRequestDto.setCreatedAt(month + "월" + day + "일" + hour + "시" + min + "분");
-        
+        int ampm = cal.get(Calendar.AM_PM);
+        if (ampm == 0) {
+            AmPm = "오전";
+        } else if (ampm == 1) {
+            AmPm = "오후";
+        }
+
+        messageRequestDto.setCreatedAt(year + "-" + month + "-" + day + " " + AmPm + " " + hour + ":" + min);
+
         System.out.println(messageRequestDto.getType());
         System.out.println(messageRequestDto.getRoomId());
         System.out.println(messageRequestDto.getSender());
