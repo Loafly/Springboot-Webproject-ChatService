@@ -4,13 +4,14 @@ import com.webproject.chatservice.dto.ChatMessageRequestDto;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatMessage extends Timestamped {
+public class ChatMessage {
 
     public enum MessageType {
         ENTER, TALK, QUIT
@@ -35,6 +36,9 @@ public class ChatMessage extends Timestamped {
 
     @Column
     private String message;
+
+    @Column
+    private LocalDateTime createdAt;
 
     @Builder
     public ChatMessage(MessageType type, String roomId, String sender, String senderEmail,String message) {

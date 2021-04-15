@@ -7,10 +7,12 @@ import com.webproject.chatservice.models.User;
 import com.webproject.chatservice.service.ChatService;
 import com.webproject.chatservice.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*")
@@ -35,6 +37,7 @@ public class ChatController {
         // 로그인 회원 정보로 유저 이메일 설정
 //        message.setSenderEmail(userDetails.getUser().getEmail());
         messageRequestDto.setSenderEmail(user.getEmail());
+
 
         System.out.println(messageRequestDto.getType());
         System.out.println(messageRequestDto.getRoomId());

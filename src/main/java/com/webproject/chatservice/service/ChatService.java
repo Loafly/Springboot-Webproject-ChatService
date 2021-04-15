@@ -46,6 +46,7 @@ public class ChatService {
         message.setSender(chatMessage.getSender());
         message.setSenderEmail(chatMessage.getSenderEmail());
         message.setMessage(chatMessage.getMessage());
+        message.setCreatedAt(chatMessage.getCreatedAt());
         chatMessageRepository.save(message);
     }
 
