@@ -17,8 +17,6 @@ public class ChatMessageRequestDto {
     private String sender;
     private String senderEmail;
     private String message;
-
-    @CreatedDate
-    private LocalDateTime createdAt;
+    private String createdAt;
 
 }

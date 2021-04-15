@@ -38,15 +38,16 @@ public class ChatMessage {
     private String message;
 
     @Column
-    private LocalDateTime createdAt;
+    private String createdAt;
 
     @Builder
-    public ChatMessage(MessageType type, String roomId, String sender, String senderEmail,String message) {
+    public ChatMessage(MessageType type, String roomId, String sender, String senderEmail,String message, String createdAt) {
         this.type = type;
         this.roomId = roomId;
         this.sender = sender;
         this.senderEmail = senderEmail;
         this.message = message;
+        this.createdAt = createdAt;
     }
 
     @Builder
@@ -56,5 +57,6 @@ public class ChatMessage {
         this.sender = chatMessageRequestDto.getSender();
         this.senderEmail = chatMessageRequestDto.getSenderEmail();
         this.message = chatMessageRequestDto.getMessage();
+        this.createdAt = chatMessageRequestDto.getCreatedAt();
     }
 }
