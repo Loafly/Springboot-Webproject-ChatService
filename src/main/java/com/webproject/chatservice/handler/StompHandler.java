@@ -75,7 +75,7 @@ public class StompHandler implements ChannelInterceptor {
 //            String name = Optional.ofNullable((Principal) message.getHeaders().get("simpUser")).map(Principal::getName).orElse("UnknownUser");
             String token = Optional.ofNullable(accessor.getFirstNativeHeader("token")).orElse("UnknownUser");
 
-            if(jwtTokenProvider.getAuthenticationUsername(token) != null) {
+            if(accessor.getFirstNativeHeader("token") != null) {
                 String name = jwtTokenProvider.getAuthenticationUsername(token);
                 chatService.sendChatMessage(ChatMessage.builder().type(ChatMessage.MessageType.QUIT).roomId(roomId).sender(name).build());
             }
