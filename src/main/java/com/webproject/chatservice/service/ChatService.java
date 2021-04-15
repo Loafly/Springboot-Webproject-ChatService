@@ -3,6 +3,9 @@ package com.webproject.chatservice.service;
 import com.webproject.chatservice.models.ChatMessage;
 import com.webproject.chatservice.repository.ChatMessageRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.stereotype.Service;
@@ -44,6 +47,12 @@ public class ChatService {
         message.setSenderEmail(chatMessage.getSenderEmail());
         message.setMessage(chatMessage.getMessage());
         chatMessageRepository.save(message);
+    }
+
+    public Page<ChatMessage> getChatMessageByRoomId(String roomId, Pageable pageable) {
+        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() -1);
+        pageable = PageRequest.of(page, 150);
+        return chatMessageRepository.findByRoomId(roomId, pageable);
     }
 
 }
