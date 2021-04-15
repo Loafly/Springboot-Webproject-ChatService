@@ -11,6 +11,9 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.web.bind.annotation.*;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -38,7 +41,14 @@ public class ChatController {
 //        message.setSenderEmail(userDetails.getUser().getEmail());
         messageRequestDto.setSenderEmail(user.getEmail());
 
+        Calendar cal = Calendar.getInstance();
+        int month = cal.get(Calendar.MONTH) + 1;
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
+        int min = cal.get(Calendar.MINUTE);
 
+        messageRequestDto.setCreatedAt(month + "월" + day + "일" + hour + "시" + min + "분");
+        
         System.out.println(messageRequestDto.getType());
         System.out.println(messageRequestDto.getRoomId());
         System.out.println(messageRequestDto.getSender());
