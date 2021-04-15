@@ -16,9 +16,10 @@ import javax.validation.constraints.Pattern;
 @AllArgsConstructor
 public class UserSignupRequestDto {
 
+//  한글 영어 / - _ 숫자 로 변경 필요
     @NotNull
     @NotBlank(message = "닉네임 입력은 필수입니다.")
-    @Pattern(regexp = "^[a-zA-Z0-9]{3,20}$", message = "3~20자리의 숫자 또는 문자만 가능합니다.")
+    @Pattern(regexp = "^[a-zA-Z0-9ㄱ-ㅎ가-힣]{3,20}$", message = "3~20자리의 숫자 또는 문자만 가능합니다.")
     private String username;
 
     @NotNull

@@ -23,17 +23,29 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column
     private String email;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
 
+    @Column
+    private Long kakaoId;
+
     public User(UserSignupRequestDto userSignupRequestDto){
         this.username = userSignupRequestDto.getUsername();
         this.password = userSignupRequestDto.getPassword();
         this.email = userSignupRequestDto.getEmail();
         this.role = UserRole.USER;
+        this.kakaoId = null;
+    }
+
+    public User(String username, String password, String email, UserRole role, Long kakaoId) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = UserRole.USER;
+        this.kakaoId = kakaoId;
     }
 }
