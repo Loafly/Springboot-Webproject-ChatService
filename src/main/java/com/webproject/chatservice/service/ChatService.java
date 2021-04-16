@@ -43,6 +43,7 @@ public class ChatService {
         ChatMessage message = new ChatMessage();
         message.setType(chatMessage.getType());
         message.setRoomId(chatMessage.getRoomId());
+        message.setUserId(chatMessage.getUserId());
         message.setSender(chatMessage.getSender());
         message.setSenderEmail(chatMessage.getSenderEmail());
         message.setMessage(chatMessage.getMessage());

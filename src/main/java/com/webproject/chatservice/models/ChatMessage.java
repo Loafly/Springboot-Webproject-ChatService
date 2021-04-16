@@ -29,6 +29,9 @@ public class ChatMessage {
     private String roomId;
 
     @Column
+    private Long userId;
+
+    @Column
     private String sender;
 
     @Column
@@ -41,9 +44,10 @@ public class ChatMessage {
     private String createdAt;
 
     @Builder
-    public ChatMessage(MessageType type, String roomId, String sender, String senderEmail,String message, String createdAt) {
+    public ChatMessage(MessageType type, String roomId, Long userId, String sender, String senderEmail,String message, String createdAt) {
         this.type = type;
         this.roomId = roomId;
+        this.userId = userId;
         this.sender = sender;
         this.senderEmail = senderEmail;
         this.message = message;
@@ -54,6 +58,7 @@ public class ChatMessage {
     public ChatMessage(ChatMessageRequestDto chatMessageRequestDto) {
         this.type = chatMessageRequestDto.getType();
         this.roomId = chatMessageRequestDto.getRoomId();
+        this.userId = chatMessageRequestDto.getUserId();
         this.sender = chatMessageRequestDto.getSender();
         this.senderEmail = chatMessageRequestDto.getSenderEmail();
         this.message = chatMessageRequestDto.getMessage();

@@ -14,6 +14,7 @@ public class ChatMessageRequestDto {
 
     private ChatMessage.MessageType type;
     private String roomId;
+    private Long userId;
     private String sender;
     private String senderEmail;
     private String message;
