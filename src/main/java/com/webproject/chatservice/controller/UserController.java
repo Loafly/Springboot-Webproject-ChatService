@@ -13,7 +13,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +44,13 @@ public class UserController {
         System.out.println("id = " + userDetails.getUser().getId());
         System.out.println("role = " + userDetails.getUser().getRole());
         return userService.findAll();
+    }
+
+    //소셜 로그인 시 Token으로 User 정보 보내주기
+    @GetMapping("/api/user/getUserEmail")
+    public String getUserName(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        System.out.println("email = " + userDetails.getUser().getEmail());
+        return userDetails.getUser().getEmail();
     }
 
     //로그인
@@ -131,14 +142,4 @@ public class UserController {
     }
 
     // 마이페이지
-
-
-    //카카오 로그인
-    @GetMapping("/user/kakao/callback")
-    public String kakaoLogin(String code) {
-        // authorizedCode: 카카오 서버로부터 받은 인가 코드
-        userService.kakaoLogin(code);
-
-        return "redirect:/";
-    }
 }

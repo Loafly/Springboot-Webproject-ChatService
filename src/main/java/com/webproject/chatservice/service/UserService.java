@@ -1,5 +1,6 @@
 package com.webproject.chatservice.service;
 
+import com.webproject.chatservice.config.JwtTokenProvider;
 import com.webproject.chatservice.dto.UserLoginRequestDto;
 import com.webproject.chatservice.kakao.KakaoOAuth2;
 import com.webproject.chatservice.kakao.KakaoUserInfo;
@@ -24,13 +25,15 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final KakaoOAuth2 kakaoOAuth2;
+    private final JwtTokenProvider jwtTokenProvider;
     private static final String ADMIN_TOKEN = "AAABnv/xRVklrnYxKZ0aHgTBcXukeZygoC";
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, KakaoOAuth2 kakaoOAuth2) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, KakaoOAuth2 kakaoOAuth2,  JwtTokenProvider jwtTokenProvider) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.kakaoOAuth2 = kakaoOAuth2;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     public List<User> findAll(){
@@ -92,7 +95,8 @@ public class UserService {
         return id;
     }
 
-    public void kakaoLogin(String authorizedCode) {
+    public String kakaoLogin(String authorizedCode) {
+        System.out.println("kakaoLogin authorizedCode = " + authorizedCode);
         // 카카오 OAuth2 를 통해 카카오 사용자 정보 조회
         KakaoUserInfo userInfo = kakaoOAuth2.getUserInfo(authorizedCode);
         Long kakaoId = userInfo.getId();
@@ -134,5 +138,6 @@ public class UserService {
         UserDetailsImpl userDetails = new UserDetailsImpl(kakaoUser);
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        return jwtTokenProvider.createToken(userDetails.getUsername());
     }
 }

@@ -17,12 +17,15 @@ public class KakaoOAuth2 {
         String accessToken = getAccessToken(authorizedCode);
         // 2. 액세스 토큰 -> 카카오 사용자 정보
         KakaoUserInfo userInfo = getUserInfoByToken(accessToken);
+        System.out.println("userInfo = " + userInfo);
+        System.out.println("userInfo.getEmail() = " + userInfo.getEmail());
+        System.out.println("userInfo.getNickname() = " + userInfo.getNickname());
 
         return userInfo;
     }
 
     private String getAccessToken(String authorizedCode) {
-
+        System.out.println("KaKao getAccessToken authorizedCode = " + authorizedCode);
         // HttpHeader 오브젝트 생성
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -56,6 +59,8 @@ public class KakaoOAuth2 {
     }
 
     private KakaoUserInfo getUserInfoByToken(String accessToken) {
+        System.out.println("KaKao getUserInfoByToken accessToken = " + accessToken);
+
         // HttpHeader 오브젝트 생성
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + accessToken);
