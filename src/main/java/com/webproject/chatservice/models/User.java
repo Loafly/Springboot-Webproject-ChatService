@@ -48,4 +48,12 @@ public class User {
         this.role = UserRole.USER;
         this.kakaoId = kakaoId;
     }
+
+    public User(String username, String password, UserRole role, Long kakaoId) {
+        this.username = username;
+        this.password = password;
+        this.role = UserRole.USER;
+        this.kakaoId = kakaoId;
+    }
+
 }

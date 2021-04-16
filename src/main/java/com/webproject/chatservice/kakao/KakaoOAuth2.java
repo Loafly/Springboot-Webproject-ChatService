@@ -12,9 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Component
 public class KakaoOAuth2 {
-    public KakaoUserInfo getUserInfo(String authorizedCode) {
-        // 1. 인가코드 -> 액세스 토큰
-        String accessToken = getAccessToken(authorizedCode);
+    public KakaoUserInfo getUserInfo(String accessToken) {
         // 2. 액세스 토큰 -> 카카오 사용자 정보
         KakaoUserInfo userInfo = getUserInfoByToken(accessToken);
         System.out.println("userInfo = " + userInfo);
@@ -83,6 +81,14 @@ public class KakaoOAuth2 {
         String email = body.getJSONObject("kakao_account").getString("email");
         String nickname = body.getJSONObject("properties").getString("nickname");
 
-        return new KakaoUserInfo(id, email, nickname);
+        if (email == null)
+        {
+            return new KakaoUserInfo(id, nickname);
+        }
+
+        else{
+            return new KakaoUserInfo(id, email, nickname);
+        }
+
     }
 }

@@ -5,8 +5,11 @@ import com.webproject.chatservice.config.JwtTokenProvider;
 import com.webproject.chatservice.dto.UserLoginRequestDto;
 import com.webproject.chatservice.dto.UserSignupRequestDto;
 import com.webproject.chatservice.handler.CustomMessageResponse;
+import com.webproject.chatservice.kakao.KakaoOAuth2;
+import com.webproject.chatservice.kakao.KakaoUserInfo;
 import com.webproject.chatservice.models.User;
 import com.webproject.chatservice.models.UserDetailsImpl;
+import com.webproject.chatservice.service.ChatService;
 import com.webproject.chatservice.service.UserService;
 
 import org.springframework.http.HttpStatus;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -28,11 +32,13 @@ public class UserController {
 
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final KakaoOAuth2 kakaoOAuth2;
 
-    public UserController(UserService userService, JwtTokenProvider jwtTokenProvider)
+    public UserController(UserService userService, JwtTokenProvider jwtTokenProvider, KakaoOAuth2 kakaoOAuth2)
     {
         this.userService = userService;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.kakaoOAuth2 = kakaoOAuth2;
     }
 
     //회원 조회
@@ -43,12 +49,22 @@ public class UserController {
 
     //소셜 로그인 시 Token으로 User 정보 보내주기
     @GetMapping("/api/user/getUserInfo")
-    public Object getUserName(@AuthenticationPrincipal UserDetailsImpl userDetails){
-        System.out.println("email = " + userDetails.getUser().getEmail());
+//    public Object getUserName(@AuthenticationPrincipal UserDetailsImpl userDetails){
+    public Object getUserName(HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+        String token = "";
+        for (Cookie cookie : cookies) {
+            if ("token".equals(cookie.getName())) {
+                token = cookie.getValue();
+            }
+        }
 
+        System.out.println("token = " + token);
+//        System.out.println("email = " + userDetails.getUser().getEmail());
+//
         JsonObject jsonObj = new JsonObject();
-        jsonObj.addProperty("username", userDetails.getUser().getUsername());
-        jsonObj.addProperty("userid", userDetails.getUser().getId());
+//        jsonObj.addProperty("username", userDetails.getUser().getUsername());
+//        jsonObj.addProperty("userid", userDetails.getUser().getId());
 
         return ResponseEntity.ok().body(jsonObj.toString());
     }
@@ -66,6 +82,21 @@ public class UserController {
             jsonObj.addProperty("userid", user.getId());
 
             return ResponseEntity.ok().body(jsonObj.toString());
+        }
+        catch (Exception ignore)
+        {
+            CustomMessageResponse customMessageResponse = new CustomMessageResponse(ignore.getMessage(),HttpStatus.BAD_REQUEST.value());
+            return customMessageResponse.SendResponse();
+        }
+    }
+
+//    카카오 로그인
+//    프론트엔드에서 처리 후 카카오 토큰을 백으로 넘겨 주어 JWT token, username, userid 반환
+    @PostMapping("/api/user/kakaoLogin")
+    public Object loginUser(@RequestBody Map<String, Object> param)
+    {
+        try{
+            return ResponseEntity.ok().body(userService.kakaoLogin(param.get("kakaoToken").toString()));
         }
         catch (Exception ignore)
         {

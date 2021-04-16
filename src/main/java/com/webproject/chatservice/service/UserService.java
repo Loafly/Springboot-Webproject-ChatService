@@ -1,5 +1,6 @@
 package com.webproject.chatservice.service;
 
+import com.google.gson.JsonObject;
 import com.webproject.chatservice.config.JwtTokenProvider;
 import com.webproject.chatservice.dto.UserLoginRequestDto;
 import com.webproject.chatservice.kakao.KakaoOAuth2;
@@ -95,10 +96,10 @@ public class UserService {
         return id;
     }
 
-    public String kakaoLogin(String authorizedCode) {
-        System.out.println("kakaoLogin authorizedCode = " + authorizedCode);
+    public JsonObject kakaoLogin(String accessToken) {
+        System.out.println("kakaoLogin accessToken = " + accessToken);
         // 카카오 OAuth2 를 통해 카카오 사용자 정보 조회
-        KakaoUserInfo userInfo = kakaoOAuth2.getUserInfo(authorizedCode);
+        KakaoUserInfo userInfo = kakaoOAuth2.getUserInfo(accessToken);
         Long kakaoId = userInfo.getId();
         String nickname = userInfo.getNickname();
         String email = userInfo.getEmail();
@@ -110,7 +111,12 @@ public class UserService {
         // 카카오 정보로 회원가입
         if (kakaoUser == null) {
             // 카카오 이메일과 동일한 이메일을 가진 회원이 있는지 확인
-            User sameEmailUser = userRepository.findByEmail(email).orElse(null);
+            User sameEmailUser = null;
+
+            if (email != null)
+            {
+                sameEmailUser = userRepository.findByEmail(email).orElse(null);
+            }
             if (sameEmailUser != null) {
                 kakaoUser = sameEmailUser;
                 // 카카오 이메일과 동일한 이메일 회원이 있는 경우
@@ -129,7 +135,14 @@ public class UserService {
                 // ROLE = 사용자
                 UserRole role = UserRole.USER;
 
-                kakaoUser = new User(username, encodedPassword, email, role, kakaoId);
+                if (email != null)
+                {
+                    kakaoUser = new User(username, encodedPassword, email, role, kakaoId);
+                }
+                else{
+                    kakaoUser = new User(username, encodedPassword, role, kakaoId);
+                }
+
                 userRepository.save(kakaoUser);
             }
         }
@@ -138,6 +151,12 @@ public class UserService {
         UserDetailsImpl userDetails = new UserDetailsImpl(kakaoUser);
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return jwtTokenProvider.createToken(userDetails.getUser().getId());
+
+        JsonObject jsonObj = new JsonObject();
+        jsonObj.addProperty("token", jwtTokenProvider.createToken(userDetails.getUser().getId()));
+        jsonObj.addProperty("username", userDetails.getUser().getUsername());
+        jsonObj.addProperty("userid", userDetails.getUser().getId());
+
+        return jsonObj;
     }
 }
