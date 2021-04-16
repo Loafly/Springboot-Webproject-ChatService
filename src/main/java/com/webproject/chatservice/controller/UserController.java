@@ -96,7 +96,11 @@ public class UserController {
     public Object loginUser(@RequestBody Map<String, Object> param)
     {
         try{
-            return ResponseEntity.ok().body(userService.kakaoLogin(param.get("kakaoToken").toString()));
+            System.out.println("kakaoLogin api 호출");
+            System.out.println("param.get(kakaoToken).toString() = " + param.get("kakaoToken").toString());
+            JsonObject jsonObj = userService.kakaoLogin(param.get("kakaoToken").toString());
+            System.out.println("jsonObj = " + jsonObj);
+            return ResponseEntity.ok().body(jsonObj.toString());
         }
         catch (Exception ignore)
         {

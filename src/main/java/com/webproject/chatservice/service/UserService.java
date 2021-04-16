@@ -41,7 +41,9 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> findByEmail(String email) { return userRepository.findByEmail(email); }
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
 
     public Long registerUser(User user){
         String password = passwordEncoder.encode(user.getPassword());
