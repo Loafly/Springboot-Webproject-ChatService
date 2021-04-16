@@ -45,6 +45,13 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
+    public User findByUsername(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new IllegalArgumentException("찾는 유저가 없습니다")
+        );
+        return user;
+    }
+
     public Long registerUser(User user){
         String password = passwordEncoder.encode(user.getPassword());
         user.setPassword(password);

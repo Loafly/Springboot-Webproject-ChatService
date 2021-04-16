@@ -179,5 +179,11 @@ public class UserController {
         return userService.updateUserPassword(email,password);
     }
 
-    // 마이페이지
+    // 마이페이지 프로필 조회
+    @GetMapping("/api/user/profile")
+    public User getMyProfile(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return userService.findByUsername(userDetails.getUsername());
+    }
+
+
 }

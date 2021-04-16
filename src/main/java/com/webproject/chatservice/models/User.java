@@ -33,12 +33,16 @@ public class User {
     @Column
     private Long kakaoId;
 
+    @Column
+    private String profileUrl;
+
     public User(UserSignupRequestDto userSignupRequestDto){
         this.username = userSignupRequestDto.getUsername();
         this.password = userSignupRequestDto.getPassword();
         this.email = userSignupRequestDto.getEmail();
         this.role = UserRole.USER;
         this.kakaoId = null;
+        this.profileUrl = null;
     }
 
     public User(String username, String password, String email, UserRole role, Long kakaoId) {
@@ -47,6 +51,7 @@ public class User {
         this.email = email;
         this.role = UserRole.USER;
         this.kakaoId = kakaoId;
+        this.profileUrl = null;
     }
 
     public User(String username, String password, UserRole role, Long kakaoId) {
@@ -54,6 +59,7 @@ public class User {
         this.password = password;
         this.role = UserRole.USER;
         this.kakaoId = kakaoId;
+        this.profileUrl = null;
     }
 
 }
