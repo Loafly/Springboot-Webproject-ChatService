@@ -138,6 +138,6 @@ public class UserService {
         UserDetailsImpl userDetails = new UserDetailsImpl(kakaoUser);
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return jwtTokenProvider.createToken(userDetails.getUsername());
+        return jwtTokenProvider.createToken(userDetails.getUser().getId());
     }
 }

@@ -39,8 +39,9 @@ public class JwtTokenProvider {
     }
 
     // JWT 토큰 생성
-    public String createToken(String userPk) {
-        Claims claims = Jwts.claims().setSubject(userPk); // JWT payload 에 저장되는 정보단위
+    public String createToken(Long userPk) {
+        String stringUserPk = userPk.toString();
+        Claims claims = Jwts.claims().setSubject(stringUserPk); // JWT payload 에 저장되는 정보단위
         Date now = new Date();
         return Jwts.builder()
                 .setClaims(claims) // 정보 저장
@@ -54,20 +55,20 @@ public class JwtTokenProvider {
     // JWT 토큰에서 인증 정보 조회
     public Authentication getAuthentication(String token) {
 //        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
-        UserDetails userDetails = userDetailsServiceImpl.loadUserByEmail(this.getUserPk(token));
+        UserDetails userDetails = userDetailsServiceImpl.loadUserById(Long.parseLong(this.getUserPk(token)));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
     // JWT 토큰에서 User 가져오기
     public User getAuthenticationUser(String token){
-        UserDetailsImpl userDetails = userDetailsServiceImpl.loadUserByEmail(this.getUserPk(token));
+        UserDetailsImpl userDetails = userDetailsServiceImpl.loadUserById(Long.parseLong(this.getUserPk(token)));
         return userDetails.getUser();
     }
 
     // JWT 토큰에서 username 조회
     public String getAuthenticationUsername(String token) {
 //        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
-        UserDetails userDetails = userDetailsServiceImpl.loadUserByEmail(this.getUserPk(token));
+        UserDetails userDetails = userDetailsServiceImpl.loadUserById(Long.parseLong(this.getUserPk(token)));
         return userDetails.getUsername();
     }
 

@@ -38,19 +38,19 @@ public class UserController {
     //회원 조회
     @GetMapping("/api/users")
     public List<User> getUser(@AuthenticationPrincipal UserDetailsImpl userDetails){
-        System.out.println("email = " + userDetails.getUser().getEmail());
-        System.out.println("username = " + userDetails.getUser().getUsername());
-        System.out.println("password = " + userDetails.getUser().getPassword());
-        System.out.println("id = " + userDetails.getUser().getId());
-        System.out.println("role = " + userDetails.getUser().getRole());
         return userService.findAll();
     }
 
     //소셜 로그인 시 Token으로 User 정보 보내주기
-    @GetMapping("/api/user/getUserEmail")
-    public String getUserName(@AuthenticationPrincipal UserDetailsImpl userDetails){
+    @GetMapping("/api/user/getUserInfo")
+    public Object getUserName(@AuthenticationPrincipal UserDetailsImpl userDetails){
         System.out.println("email = " + userDetails.getUser().getEmail());
-        return userDetails.getUser().getEmail();
+
+        JsonObject jsonObj = new JsonObject();
+        jsonObj.addProperty("username", userDetails.getUser().getUsername());
+        jsonObj.addProperty("userid", userDetails.getUser().getId());
+
+        return ResponseEntity.ok().body(jsonObj.toString());
     }
 
     //로그인
@@ -61,8 +61,9 @@ public class UserController {
             User user = userService.loginValidCheck(userLoginRequestDto);
 
             JsonObject jsonObj = new JsonObject();
-            jsonObj.addProperty("token", jwtTokenProvider.createToken(user.getEmail()));
+            jsonObj.addProperty("token", jwtTokenProvider.createToken(user.getId()));
             jsonObj.addProperty("username", user.getUsername());
+            jsonObj.addProperty("userid", user.getId());
 
             return ResponseEntity.ok().body(jsonObj.toString());
         }
@@ -115,6 +116,7 @@ public class UserController {
         return userService.deleteUser((Long) param.get("id"));
     }
 
+    //비밀번호 찾기
     @PostMapping("/api/user/findPassword")
     public Object findPasswordByEamil(@RequestBody Map<String, Object> param){
         try
@@ -133,6 +135,7 @@ public class UserController {
         }
     }
 
+    //비밀번호 변경
     @PutMapping("/api/user/changePassword")
     public Long updateUserPassword(@RequestBody Map<String, Object> param){
         String email = param.get("email").toString();
