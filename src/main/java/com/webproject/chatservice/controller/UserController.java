@@ -3,6 +3,7 @@ package com.webproject.chatservice.controller;
 import com.google.gson.JsonObject;
 import com.webproject.chatservice.config.JwtTokenProvider;
 import com.webproject.chatservice.dto.UserLoginRequestDto;
+import com.webproject.chatservice.dto.UserProfileRequestDto;
 import com.webproject.chatservice.dto.UserSignupRequestDto;
 import com.webproject.chatservice.handler.CustomMessageResponse;
 import com.webproject.chatservice.kakao.KakaoOAuth2;
@@ -12,10 +13,12 @@ import com.webproject.chatservice.models.UserDetailsImpl;
 import com.webproject.chatservice.service.ChatService;
 import com.webproject.chatservice.service.UserService;
 
+//import com.webproject.chatservice.utils.S3Uploader;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 
@@ -23,6 +26,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -33,12 +37,14 @@ public class UserController {
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
     private final KakaoOAuth2 kakaoOAuth2;
+//    private final S3Uploader s3Uploader;
 
     public UserController(UserService userService, JwtTokenProvider jwtTokenProvider, KakaoOAuth2 kakaoOAuth2)
     {
         this.userService = userService;
         this.jwtTokenProvider = jwtTokenProvider;
         this.kakaoOAuth2 = kakaoOAuth2;
+//        this.s3Uploader = s3Uploader;
     }
 
     //회원 조회
@@ -180,10 +186,26 @@ public class UserController {
     }
 
     // 마이페이지 프로필 조회
+    // token 키 값으로 Header 에 실어주시면 된다!!
     @GetMapping("/api/user/profile")
     public User getMyProfile(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return userService.findByUsername(userDetails.getUsername());
     }
 
+    // 마이페이지 프로필 수정
+    // username, email, profileurl 만 바꿀 수 있도록 함
+    @PutMapping("api/user/profile/{userId}")
+    public User updateMyProfile(@PathVariable Long userId, @RequestBody UserProfileRequestDto userProfileRequestDto) {
+        return userService.myProfileUpdate(userId, userProfileRequestDto);
+    }
+
+//    // 마이페이지 프로필 사진 수정
+//    @PutMapping("api/user/profile/{userId}/img")
+//    public String upload(@RequestParam("data") MultipartFile multipartFile, @PathVariable Long userId, UserProfileRequestDto userProfileRequestDto) throws IOException {
+//        String profileUrl = s3Uploader.upload(multipartFile, "static");
+//        userProfileRequestDto.setProfileUrl(profileUrl);
+//        userService.myProfileUrlUpdate(userId, userProfileRequestDto);
+//        return profileUrl;
+//    }
 
 }
