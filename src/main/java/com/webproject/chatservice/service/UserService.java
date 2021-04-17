@@ -3,6 +3,7 @@ package com.webproject.chatservice.service;
 import com.google.gson.JsonObject;
 import com.webproject.chatservice.config.JwtTokenProvider;
 import com.webproject.chatservice.dto.UserLoginRequestDto;
+import com.webproject.chatservice.dto.UserProfileRequestDto;
 import com.webproject.chatservice.kakao.KakaoOAuth2;
 import com.webproject.chatservice.kakao.KakaoUserInfo;
 import com.webproject.chatservice.models.User;
@@ -168,4 +169,24 @@ public class UserService {
 
         return jsonObj;
     }
+
+    public User myProfileUpdate(Long id, UserProfileRequestDto userProfileRequestDto) {
+        User user = userRepository.findById(id).orElseThrow(
+                ()-> new IllegalArgumentException("해당 아이디가 존재하지 않습니다")
+        );
+        if (userProfileRequestDto.getUsername() !=null) {
+            user.updateUsername(userProfileRequestDto);
+        } else if (userProfileRequestDto.getEmail() != null) {
+            user.updateEmail(userProfileRequestDto);
+        }
+        return user;
+    }
+
+//    public User myProfileUrlUpdate(Long id, UserProfileRequestDto userProfileRequestDto) {
+//        User user = userRepository.findById(id).orElseThrow(
+//                ()-> new IllegalArgumentException("해당 아이디가 존재하지 않습니다")
+//        );
+//        user.updateProfileUrl(userProfileRequestDto);
+//        return user;
+//    }
 }

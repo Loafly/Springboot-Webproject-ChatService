@@ -1,5 +1,6 @@
 package com.webproject.chatservice.models;
 
+import com.webproject.chatservice.dto.UserProfileRequestDto;
 import com.webproject.chatservice.dto.UserSignupRequestDto;
 import lombok.Data;
 import lombok.Getter;
@@ -60,6 +61,24 @@ public class User {
         this.role = UserRole.USER;
         this.kakaoId = kakaoId;
         this.profileUrl = null;
+    }
+
+    public User(UserProfileRequestDto userProfileRequestDto) {
+        this.username = userProfileRequestDto.getUsername();
+        this.email = userProfileRequestDto.getEmail();
+        this.role = userProfileRequestDto.getRole();
+        this.kakaoId = userProfileRequestDto.getKakaoId();
+        this.profileUrl = userProfileRequestDto.getProfileUrl();
+    }
+
+    public void updateUsername(UserProfileRequestDto userProfileRequestDto) {
+        this.username = userProfileRequestDto.getUsername();
+    }
+    public void updateEmail(UserProfileRequestDto userProfileRequestDto) {
+        this.email = userProfileRequestDto.getEmail();
+    }
+    public void updateProfileUrl(UserProfileRequestDto userProfileRequestDto) {
+        this.profileUrl = userProfileRequestDto.getProfileUrl();
     }
 
 }
