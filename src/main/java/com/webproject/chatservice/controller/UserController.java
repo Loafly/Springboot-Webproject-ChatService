@@ -7,10 +7,8 @@ import com.webproject.chatservice.dto.UserProfileRequestDto;
 import com.webproject.chatservice.dto.UserSignupRequestDto;
 import com.webproject.chatservice.handler.CustomMessageResponse;
 import com.webproject.chatservice.kakao.KakaoOAuth2;
-import com.webproject.chatservice.kakao.KakaoUserInfo;
 import com.webproject.chatservice.models.User;
 import com.webproject.chatservice.models.UserDetailsImpl;
-import com.webproject.chatservice.service.ChatService;
 import com.webproject.chatservice.service.UserService;
 
 //import com.webproject.chatservice.utils.S3Uploader;
@@ -18,15 +16,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.View;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -52,29 +45,7 @@ public class UserController {
     public List<User> getUser(@AuthenticationPrincipal UserDetailsImpl userDetails){
         return userService.findAll();
     }
-
-    //소셜 로그인 시 Token으로 User 정보 보내주기
-    @GetMapping("/api/user/getUserInfo")
-//    public Object getUserName(@AuthenticationPrincipal UserDetailsImpl userDetails){
-    public Object getUserName(HttpServletRequest request){
-        Cookie[] cookies = request.getCookies();
-        String token = "";
-        for (Cookie cookie : cookies) {
-            if ("token".equals(cookie.getName())) {
-                token = cookie.getValue();
-            }
-        }
-
-        System.out.println("token = " + token);
-//        System.out.println("email = " + userDetails.getUser().getEmail());
-//
-        JsonObject jsonObj = new JsonObject();
-//        jsonObj.addProperty("username", userDetails.getUser().getUsername());
-//        jsonObj.addProperty("userid", userDetails.getUser().getId());
-
-        return ResponseEntity.ok().body(jsonObj.toString());
-    }
-
+    
     //로그인
     @PostMapping("/api/user/login")
     public Object loginUser(@Valid @RequestBody UserLoginRequestDto userLoginRequestDto)
