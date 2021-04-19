@@ -1,5 +1,6 @@
 package com.webproject.chatservice.controller;
 
+import com.webproject.chatservice.config.JwtTokenProvider;
 import com.webproject.chatservice.dto.ChatRoomRequestDto;
 import com.webproject.chatservice.models.ChatMessage;
 import com.webproject.chatservice.models.ChatRoom;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +23,8 @@ public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
     private final ChatService chatService;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final Uploader uploader;
 
     @GetMapping("/rooms")
     public List<ChatRoom> getAllChatRooms() {
@@ -28,8 +32,11 @@ public class ChatRoomController {
     }
 
     @PostMapping("/rooms")
-    public ChatRoom createChatRoom(@RequestBody ChatRoomRequestDto requestDto) {
-        requestDto.getChatRoomName();
+    public ChatRoom createChatRoom(@RequestParam("data")MultipartFile file, @RequestParam("chatRoomName")String chatRoomName ,ChatRoomRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+        String chatRoomUrl = uploader.upload(file, "static");
+        requestDto.setChatRoomImg(chatRoomUrl);
+        requestDto.setChatRoomName(chatRoomName);
+        requestDto.setUserId(userDetails.getUser().getId());
         ChatRoom chatRoom = chatRoomService.createChatRoom(requestDto);
         return chatRoom;
     }

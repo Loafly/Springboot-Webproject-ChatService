@@ -1,8 +1,10 @@
 package com.webproject.chatservice.models;
 
 import com.webproject.chatservice.dto.ChatRoomRequestDto;
+import com.webproject.chatservice.service.UserService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 
 import javax.persistence.*;
 
@@ -19,8 +21,17 @@ public class ChatRoom extends Timestamped {
     @Column
     private String chatRoomName;
 
-    public ChatRoom(ChatRoomRequestDto requestDto) {
+    @Column
+    private String chatRoomImg;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public ChatRoom(ChatRoomRequestDto requestDto, UserService userService) {
         this.chatRoomName = requestDto.getChatRoomName();
+        this.chatRoomImg = requestDto.getChatRoomImg();
+        this.user = userService.findById(requestDto.getUserId());
     }
 
 }

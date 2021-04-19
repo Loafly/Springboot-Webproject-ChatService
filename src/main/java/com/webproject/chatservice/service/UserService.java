@@ -48,6 +48,10 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
+    public User findById(Long id) {
+        return userRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("찾는 유저가 없습니다"));
+    }
+
     public User findByUsername(String username) {
         User user = userRepository.findByUsername(username).orElseThrow(
                 () -> new IllegalArgumentException("찾는 유저가 없습니다")
