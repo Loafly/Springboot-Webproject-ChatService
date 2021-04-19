@@ -37,6 +37,7 @@ public class ChatController {
         // 로그인 회원 정보로 유저 이메일 설정
 //        message.setSenderEmail(userDetails.getUser().getEmail());
         messageRequestDto.setSenderEmail(user.getEmail());
+        messageRequestDto.setSenderImg(user.getProfileUrl());
         messageRequestDto.setUserId(user.getId());
 
         // 메시지 생성 시간 삽입

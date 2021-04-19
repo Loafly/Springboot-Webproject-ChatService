@@ -13,6 +13,7 @@ public class ChatMessageRequestDto {
     private Long userId;
     private String sender;
     private String senderEmail;
+    private String senderImg;
     private String message;
     private String createdAt;
 
