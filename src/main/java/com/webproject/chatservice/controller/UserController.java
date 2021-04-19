@@ -12,12 +12,15 @@ import com.webproject.chatservice.models.UserDetailsImpl;
 import com.webproject.chatservice.service.UserService;
 
 //import com.webproject.chatservice.utils.S3Uploader;
+import com.webproject.chatservice.utils.Uploader;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -28,14 +31,14 @@ public class UserController {
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
     private final KakaoOAuth2 kakaoOAuth2;
-//    private final S3Uploader s3Uploader;
+    private final Uploader uploader;
 
-    public UserController(UserService userService, JwtTokenProvider jwtTokenProvider, KakaoOAuth2 kakaoOAuth2)
+    public UserController(UserService userService, JwtTokenProvider jwtTokenProvider, KakaoOAuth2 kakaoOAuth2, Uploader uploader)
     {
         this.userService = userService;
         this.jwtTokenProvider = jwtTokenProvider;
         this.kakaoOAuth2 = kakaoOAuth2;
-//        this.s3Uploader = s3Uploader;
+        this.uploader = uploader;
     }
 
     //회원 조회
@@ -159,13 +162,11 @@ public class UserController {
         return userService.myProfileUpdate(userId, userProfileRequestDto);
     }
 
-//    // 마이페이지 프로필 사진 수정
-//    @PutMapping("api/user/profile/{userId}/img")
-//    public String upload(@RequestParam("data") MultipartFile multipartFile, @PathVariable Long userId, UserProfileRequestDto userProfileRequestDto) throws IOException {
-//        String profileUrl = s3Uploader.upload(multipartFile, "static");
-//        userProfileRequestDto.setProfileUrl(profileUrl);
-//        userService.myProfileUrlUpdate(userId, userProfileRequestDto);
+    @PutMapping("/api/user/profile/{userId}/img")
+    public User upload(@RequestParam("data") MultipartFile file, @PathVariable Long userId) throws IOException {
+        String profileUrl = uploader.upload(file, "static");
+        return userService.myProfileUrlUpdate(userId,profileUrl);
 //        return profileUrl;
-//    }
+    }
 
 }

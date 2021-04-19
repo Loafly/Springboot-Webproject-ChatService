@@ -77,8 +77,8 @@ public class User {
     public void updateEmail(UserProfileRequestDto userProfileRequestDto) {
         this.email = userProfileRequestDto.getEmail();
     }
-    public void updateProfileUrl(UserProfileRequestDto userProfileRequestDto) {
-        this.profileUrl = userProfileRequestDto.getProfileUrl();
+    public void updateProfileUrl(String profileUrl) {
+        this.profileUrl = profileUrl;
     }
 
 }

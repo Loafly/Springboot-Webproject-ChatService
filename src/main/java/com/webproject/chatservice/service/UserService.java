@@ -180,14 +180,16 @@ public class UserService {
         } else if (userProfileRequestDto.getEmail() != null) {
             user.updateEmail(userProfileRequestDto);
         }
+        userRepository.save(user);
         return user;
     }
 
-//    public User myProfileUrlUpdate(Long id, UserProfileRequestDto userProfileRequestDto) {
-//        User user = userRepository.findById(id).orElseThrow(
-//                ()-> new IllegalArgumentException("해당 아이디가 존재하지 않습니다")
-//        );
-//        user.updateProfileUrl(userProfileRequestDto);
-//        return user;
-//    }
+    public User myProfileUrlUpdate(Long id, String profileUrl) {
+        User user = userRepository.findById(id).orElseThrow(
+                ()-> new IllegalArgumentException("해당 아이디가 존재하지 않습니다")
+        );
+        user.updateProfileUrl(profileUrl);
+        userRepository.save(user);
+        return user;
+    }
 }
