@@ -45,7 +45,7 @@ public class UserController {
     public List<User> getUser(@AuthenticationPrincipal UserDetailsImpl userDetails){
         return userService.findAll();
     }
-    
+
     //로그인
     @PostMapping("/api/user/login")
     public Object loginUser(@Valid @RequestBody UserLoginRequestDto userLoginRequestDto)
