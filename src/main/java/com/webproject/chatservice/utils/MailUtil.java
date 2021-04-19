@@ -2,11 +2,22 @@ package com.webproject.chatservice.utils;
 
 import com.webproject.chatservice.models.User;
 import org.apache.commons.mail.HtmlEmail;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.Random;
 
+@Component
 //메일을 보낼 클래스
 public class MailUtil {
+    @Value("${spring.mail.host}")
+    private String hostSMTP;
+
+    @Value("${spring.mail.username}")
+    private String hostSMTPid;
+
+    @Value("${spring.mail.password}")
+    private String hostSMTPpw;
 
     public int sendMail(User user) throws Exception {
         Random r = new Random();
@@ -14,12 +25,8 @@ public class MailUtil {
 
         //Mail Server 설정
         String charSet = "utf-8";
-        String hostSMTP = "smtp.naver.com"; //SMTP 서버명
-        String hostSMTPid = "skatjr30"; //naver id
-        String hostSMTPpw = "12354aa";
-
         //보내는 사람
-        String fromEmail = "skatjr30@naver.com";
+        String fromEmail = this.hostSMTPid + "@naver.com";
         String fromName = "gaemangtalk";
 
         String title = "비밀번호 찾기 인증 이메일 입니다.";    //제목

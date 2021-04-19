@@ -29,13 +29,15 @@ public class UserService {
     private final KakaoOAuth2 kakaoOAuth2;
     private final JwtTokenProvider jwtTokenProvider;
     private static final String ADMIN_TOKEN = "AAABnv/xRVklrnYxKZ0aHgTBcXukeZygoC";
+    private final MailUtil mailUtil;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, KakaoOAuth2 kakaoOAuth2,  JwtTokenProvider jwtTokenProvider) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, KakaoOAuth2 kakaoOAuth2,  JwtTokenProvider jwtTokenProvider, MailUtil mailUtil) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.kakaoOAuth2 = kakaoOAuth2;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.mailUtil = mailUtil;
     }
 
     public List<User> findAll(){
@@ -77,7 +79,6 @@ public class UserService {
     }
 
     public int findPasswordByEamil(String email) {
-        MailUtil mailUtil = new MailUtil();
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
         try{

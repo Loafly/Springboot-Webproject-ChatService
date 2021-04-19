@@ -22,12 +22,6 @@ public class CustomMessageResponse {
         this.status = status;
     }
 
-    public CustomMessageResponse(int status)
-    {
-        this.time = LocalDateTime.now();
-        this.status = status;
-    }
-
     public ResponseEntity SendResponse()
     {
         return ResponseEntity

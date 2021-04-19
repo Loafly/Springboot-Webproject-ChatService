@@ -30,16 +30,11 @@ public class StompHandler implements ChannelInterceptor {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
         System.out.println("stomp handler===============================================================================================================");
         System.out.println("accessor.getCommand() = " + accessor.getCommand());
-        System.out.println("accessor.getMessage() = " + accessor.getMessage());
         System.out.println("message.toString() = " + message.toString());
-        System.out.println("message.getPayload() = " + message.getPayload());
-        System.out.println("channel.toString() = " + channel.toString());
-        System.out.println("accessor.getNativeHeader(token) = " + accessor.getNativeHeader("token"));
         System.out.println("accessor.getFirstNativeHeader(token) = " + accessor.getFirstNativeHeader("token"));
 
         if (StompCommand.CONNECT == accessor.getCommand()) { // websocket 연결요청
             String jwtToken = accessor.getFirstNativeHeader("token");
-//            System.out.println("accessor.getFirstNativeHeader(token) = " + accessor.getFirstNativeHeader("token"));
             log.info("CONNECT {}", jwtToken);
             // Header의 jwt token 검증
             jwtTokenProvider.validateToken(jwtToken);
@@ -56,9 +51,7 @@ public class StompHandler implements ChannelInterceptor {
             chatRoomService.setUserEnterInfo(sessionId, roomId);
 
             // 클라이언트 입장 메시지를 채팅방에 발송한다.(redis publish)
-//            String name = Optional.ofNullable((Principal) message.getHeaders().get("simpUser")).map(Principal::getName).orElse("UnknownUser");
             String token = Optional.ofNullable(accessor.getFirstNativeHeader("token")).orElse("UnknownUser");
-//              UserDetails userDetails = userDetailsServiceImpl.loadUserByEmail(jwtTokenProvider.getUserPk(token));
             String name = jwtTokenProvider.getAuthenticationUsername(token);
             chatService.sendChatMessage(ChatMessage.builder().type(ChatMessage.MessageType.ENTER).roomId(roomId).sender(name).build());
 
@@ -72,7 +65,6 @@ public class StompHandler implements ChannelInterceptor {
             String roomId = chatRoomService.getUserEnterRoomId(sessionId);
 
             // 클라이언트 퇴장 메시지를 채팅방에 발송한다.(redis publish)
-//            String name = Optional.ofNullable((Principal) message.getHeaders().get("simpUser")).map(Principal::getName).orElse("UnknownUser");
             String token = Optional.ofNullable(accessor.getFirstNativeHeader("token")).orElse("UnknownUser");
 
             if(accessor.getFirstNativeHeader("token") != null) {

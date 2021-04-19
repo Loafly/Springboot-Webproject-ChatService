@@ -17,8 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
@@ -73,10 +71,7 @@ public class UserController {
     public Object loginUser(@RequestBody Map<String, Object> param)
     {
         try{
-            System.out.println("kakaoLogin api 호출");
-            System.out.println("param.get(kakaoToken).toString() = " + param.get("kakaoToken").toString());
             JsonObject jsonObj = userService.kakaoLogin(param.get("kakaoToken").toString());
-            System.out.println("jsonObj = " + jsonObj);
             return ResponseEntity.ok().body(jsonObj.toString());
         }
         catch (Exception ignore)
@@ -116,14 +111,8 @@ public class UserController {
         }
     }
 
-    //회원 수정
-    @PutMapping("/api/user/update")
-    public User updateUsers(@Valid @RequestBody UserSignupRequestDto userSignupRequestDto){
-        return null;
-    }
-
     //회원 삭제
-    @PutMapping("/api/user/delete")
+    @DeleteMapping("/api/user/delete")
     public Long deleteUsers(@RequestBody Map<String, Object> param){
         return userService.deleteUser((Long) param.get("id"));
     }
