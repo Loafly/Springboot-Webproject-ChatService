@@ -1,18 +1,21 @@
 package com.webproject.chatservice.controller;
 
-import com.webproject.chatservice.config.JwtTokenProvider;
 import com.webproject.chatservice.dto.ChatRoomRequestDto;
 import com.webproject.chatservice.models.ChatMessage;
 import com.webproject.chatservice.models.ChatRoom;
+import com.webproject.chatservice.models.UserDetailsImpl;
 import com.webproject.chatservice.service.ChatRoomService;
 import com.webproject.chatservice.service.ChatService;
+import com.webproject.chatservice.utils.Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @CrossOrigin (origins = "*")
@@ -23,7 +26,6 @@ public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
     private final ChatService chatService;
-    private final JwtTokenProvider jwtTokenProvider;
     private final Uploader uploader;
 
     @GetMapping("/rooms")
@@ -32,7 +34,7 @@ public class ChatRoomController {
     }
 
     @PostMapping("/rooms")
-    public ChatRoom createChatRoom(@RequestParam("data")MultipartFile file, @RequestParam("chatRoomName")String chatRoomName ,ChatRoomRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+    public ChatRoom createChatRoom(@RequestParam("data") MultipartFile file, @RequestParam("chatRoomName")String chatRoomName , ChatRoomRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
         String chatRoomUrl = uploader.upload(file, "static");
         requestDto.setChatRoomImg(chatRoomUrl);
         requestDto.setChatRoomName(chatRoomName);
