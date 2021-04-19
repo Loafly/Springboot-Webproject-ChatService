@@ -1,6 +1,5 @@
 package com.webproject.chatservice.config;
 
-import org.apache.catalina.filters.CorsFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,13 +8,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.CorsUtils;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
@@ -50,16 +44,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        http.headers().frameOptions().sameOrigin();
         http.authorizeRequests()
                 // login 없이 허용
-                .antMatchers("/**").permitAll()
-                .antMatchers("/api/user/**").permitAll()
+//                .antMatchers("/**").permitAll()
+                .antMatchers("/api/user/login").permitAll()
+                .antMatchers("/api/user/kakaoLogin").permitAll()
+                .antMatchers("/api/user/signup").permitAll()
+                .antMatchers("/api/user/signup/emailCheck").permitAll()
+                .antMatchers("/api/user/findPassword").permitAll()
+                .antMatchers("/api/user/changePassword").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/chat/**").permitAll()
+                .antMatchers("/api/chat/message").permitAll()
                 // 그 외 모든 요청은 인증과정 필요
                 .anyRequest().authenticated()
-//                .anyRequest().permitAll()
-//                .and()
-//                .cors()
                 .and()
+
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class);
 

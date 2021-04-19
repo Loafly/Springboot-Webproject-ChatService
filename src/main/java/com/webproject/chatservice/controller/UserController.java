@@ -6,12 +6,10 @@ import com.webproject.chatservice.dto.UserLoginRequestDto;
 import com.webproject.chatservice.dto.UserProfileRequestDto;
 import com.webproject.chatservice.dto.UserSignupRequestDto;
 import com.webproject.chatservice.handler.CustomMessageResponse;
-import com.webproject.chatservice.kakao.KakaoOAuth2;
 import com.webproject.chatservice.models.User;
 import com.webproject.chatservice.models.UserDetailsImpl;
 import com.webproject.chatservice.service.UserService;
 
-//import com.webproject.chatservice.utils.S3Uploader;
 import com.webproject.chatservice.utils.Uploader;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,14 +28,12 @@ public class UserController {
 
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
-    private final KakaoOAuth2 kakaoOAuth2;
     private final Uploader uploader;
 
-    public UserController(UserService userService, JwtTokenProvider jwtTokenProvider, KakaoOAuth2 kakaoOAuth2, Uploader uploader)
+    public UserController(UserService userService, JwtTokenProvider jwtTokenProvider, Uploader uploader)
     {
         this.userService = userService;
         this.jwtTokenProvider = jwtTokenProvider;
-        this.kakaoOAuth2 = kakaoOAuth2;
         this.uploader = uploader;
     }
 
@@ -58,6 +54,7 @@ public class UserController {
             jsonObj.addProperty("token", jwtTokenProvider.createToken(user.getId()));
             jsonObj.addProperty("username", user.getUsername());
             jsonObj.addProperty("userid", user.getId());
+            jsonObj.addProperty("userProfileUrl", user.getProfileUrl());
 
             return ResponseEntity.ok().body(jsonObj.toString());
         }

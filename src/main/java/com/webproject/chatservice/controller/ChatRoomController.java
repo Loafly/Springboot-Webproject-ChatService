@@ -1,6 +1,5 @@
 package com.webproject.chatservice.controller;
 
-import com.webproject.chatservice.config.JwtTokenProvider;
 import com.webproject.chatservice.dto.ChatRoomRequestDto;
 import com.webproject.chatservice.models.ChatMessage;
 import com.webproject.chatservice.models.ChatRoom;
@@ -22,7 +21,6 @@ public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
     private final ChatService chatService;
-    private final JwtTokenProvider jwtTokenProvider;
 
     @GetMapping("/rooms")
     public List<ChatRoom> getAllChatRooms() {

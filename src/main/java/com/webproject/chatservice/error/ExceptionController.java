@@ -38,7 +38,6 @@ public class ExceptionController {
             //DTO에 유효성체크를 걸어놓은 어노테이션명을 가져온다.
             String bindResultCode = bindingResult.getFieldError().getCode();
 
-//            switch (bindResultCode){
             switch (Objects.requireNonNull(bindResultCode)){
                 case "NotNull":
                     code = ErrorCode.NOT_NULL.getCode();

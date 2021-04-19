@@ -5,7 +5,6 @@ import com.webproject.chatservice.dto.ChatMessageRequestDto;
 import com.webproject.chatservice.models.ChatMessage;
 import com.webproject.chatservice.models.User;
 import com.webproject.chatservice.service.ChatService;
-import com.webproject.chatservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -21,21 +20,16 @@ import java.util.TimeZone;
 public class ChatController {
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final UserService userService;
     private final ChatService chatService;
 
     @MessageMapping("/api/chat/message")
     public void message(@RequestBody ChatMessageRequestDto messageRequestDto, @Header("token") String token) {
-//    public void message(@RequestBody ChatMessageRequestDto messageRequestDto) {
         // 로그인 회원 정보로 대화명 설정
-
         User user = jwtTokenProvider.getAuthenticationUser(token);
 
-//        message.setSender(userDetails.getUsername());
         messageRequestDto.setSender(user.getUsername());
 
         // 로그인 회원 정보로 유저 이메일 설정
-//        message.setSenderEmail(userDetails.getUser().getEmail());
         messageRequestDto.setSenderEmail(user.getEmail());
         messageRequestDto.setUserId(user.getId());
 
