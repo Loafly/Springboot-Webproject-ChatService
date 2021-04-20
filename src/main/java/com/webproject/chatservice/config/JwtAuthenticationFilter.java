@@ -29,11 +29,11 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         }
         else
         {
-//            System.out.println(((HttpServletRequest) request).getMethod());
-//            if (((HttpServletRequest) request).getMethod().toString().equals("OPTIONS"))
-//            {
-//                System.out.println("test");
-//            }
+            System.out.println("requestUrl" + ((HttpServletRequest) request).getMethod());
+            if (((HttpServletRequest) request).getMethod().toString().equals("OPTIONS"))
+            {
+                System.out.println("test");
+            }
             SecurityContextHolder.getContext().setAuthentication(null);
         }
         chain.doFilter(request, response);
