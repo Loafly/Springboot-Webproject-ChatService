@@ -156,6 +156,8 @@ public class UserController {
     // username, email, profileurl 만 바꿀 수 있도록 함
     @PutMapping("api/user/profile/{userId}")
     public User updateMyProfile(@PathVariable Long userId, @RequestBody UserProfileRequestDto userProfileRequestDto) {
+        System.out.println(userProfileRequestDto.getProfileUrl());
+        System.out.println(userProfileRequestDto.getUsername());
         return userService.myProfileUpdate(userId, userProfileRequestDto);
     }
 
