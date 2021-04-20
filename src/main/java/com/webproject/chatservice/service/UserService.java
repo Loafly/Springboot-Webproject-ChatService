@@ -179,6 +179,8 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(
                 ()-> new IllegalArgumentException("해당 아이디가 존재하지 않습니다")
         );
+        System.out.println(userProfileRequestDto.getProfileUrl());
+        System.out.println(userProfileRequestDto.getUsername());
         if (userProfileRequestDto.getUsername() !=null) {
             user.updateUsername(userProfileRequestDto);
         } else if (userProfileRequestDto.getEmail() != null) {
