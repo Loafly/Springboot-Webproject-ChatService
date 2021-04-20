@@ -44,7 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        http.headers().frameOptions().sameOrigin();
         http.authorizeRequests()
                 // login 없이 허용
-//                .antMatchers("/**").permitAll()
+                .antMatchers("/**").permitAll()
                 .antMatchers("/api/user/login").permitAll()
                 .antMatchers("/api/user/kakaoLogin").permitAll()
                 .antMatchers("/api/user/signup").permitAll()
@@ -53,10 +53,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/changePassword").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/api/chat/message").permitAll()
+
                 // 그 외 모든 요청은 인증과정 필요
                 .anyRequest().authenticated()
                 .and()
-
+                .exceptionHandling().accessDeniedPage("http://gaemangtalk.site/")
+                .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class);
 
