@@ -44,7 +44,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        http.headers().frameOptions().sameOrigin();
         http.authorizeRequests()
                 // login 없이 허용
-                .antMatchers("/**").permitAll()
+//                .antMatchers("/**").permitAll()
+//                .antMatchers("/api/user/**").permitAll()
+                .antMatchers("/chatting/**").permitAll()
                 .antMatchers("/api/user/login").permitAll()
                 .antMatchers("/api/user/kakaoLogin").permitAll()
                 .antMatchers("/api/user/signup").permitAll()

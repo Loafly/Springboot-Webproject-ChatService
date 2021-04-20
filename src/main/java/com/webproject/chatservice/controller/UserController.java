@@ -14,11 +14,10 @@ import com.webproject.chatservice.utils.Uploader;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -156,8 +155,6 @@ public class UserController {
     // username, email, profileurl 만 바꿀 수 있도록 함
     @PutMapping("api/user/profile/{userId}")
     public User updateMyProfile(@PathVariable Long userId, @RequestBody UserProfileRequestDto userProfileRequestDto) {
-        System.out.println(userProfileRequestDto.getProfileUrl());
-        System.out.println(userProfileRequestDto.getUsername());
         return userService.myProfileUpdate(userId, userProfileRequestDto);
     }
 

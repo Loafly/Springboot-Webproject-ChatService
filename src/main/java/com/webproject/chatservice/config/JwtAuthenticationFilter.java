@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @RequiredArgsConstructor
@@ -29,10 +30,13 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         }
         else
         {
-            System.out.println("requestUrl" + ((HttpServletRequest) request).getMethod());
             if (((HttpServletRequest) request).getMethod().toString().equals("OPTIONS"))
             {
-                System.out.println("test");
+                System.out.println("option");
+                ((HttpServletResponse) response).addHeader("Access-Control-Allow-Origin", "*");
+                ((HttpServletResponse) response).addHeader("Access-Control-Allow-Methods","*");
+                ((HttpServletResponse) response).addHeader("Access-Control-Allow-Headers","*");
+                return;
             }
             SecurityContextHolder.getContext().setAuthentication(null);
         }
