@@ -160,12 +160,11 @@ public class UserController {
     }
 
     // 마이페이지 프로필 사진 수정
-    @PutMapping("/api/user/profile/{userId}/img")
-    public User upload(@RequestParam("data") MultipartFile file, @PathVariable Long userId) throws IOException {
-        String profileUrl = uploader.upload(file, "static");
-
-        return userService.myProfileUrlUpdate(userId,profileUrl);
-//        return profileUrl;
-    }
+//    @PutMapping("/api/user/profile/{userId}/img")
+//    public User upload(@RequestParam("data") MultipartFile file, @PathVariable Long userId) throws IOException {
+//        String profileUrl = uploader.upload(file, "static");
+//        return userService.myProfileUrlUpdate(userId,profileUrl);
+////        return profileUrl;
+//    }
 
 }

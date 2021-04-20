@@ -34,10 +34,7 @@ public class ChatRoomController {
     }
 
     @PostMapping("/rooms")
-    public ChatRoom createChatRoom(@RequestParam("data") MultipartFile file, @RequestParam("chatRoomName")String chatRoomName , ChatRoomRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
-        String chatRoomUrl = uploader.upload(file, "static");
-        requestDto.setChatRoomImg(chatRoomUrl);
-        requestDto.setChatRoomName(chatRoomName);
+    public ChatRoom createChatRoom(@RequestBody ChatRoomRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
         requestDto.setUserId(userDetails.getUser().getId());
         ChatRoom chatRoom = chatRoomService.createChatRoom(requestDto);
         return chatRoom;
