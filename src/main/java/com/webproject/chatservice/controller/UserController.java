@@ -163,6 +163,7 @@ public class UserController {
     @PutMapping("/api/user/profile/{userId}/img")
     public User upload(@RequestParam("data") MultipartFile file, @PathVariable Long userId) throws IOException {
         String profileUrl = uploader.upload(file, "static");
+
         return userService.myProfileUrlUpdate(userId,profileUrl);
 //        return profileUrl;
     }

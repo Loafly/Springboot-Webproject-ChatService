@@ -18,8 +18,6 @@ import java.io.IOException;
 @Component // 빈 등록을 위한 어노테이션
 public class S3Uploader implements Uploader {
 
-    private final static String TEMP_FILE_PATH = "src/main/resources/";
-
     private final AmazonS3Client amazonS3Client;
 
     @Value("${cloud.aws.s3.bucket}")  // 프로퍼티에서 cloude.aws.s3.bucket에 대한 정보를 불러옵니다.
@@ -50,7 +48,7 @@ public class S3Uploader implements Uploader {
     }
 
     private File convert(MultipartFile file) throws IOException {
-        File convertFile = new File(TEMP_FILE_PATH + file.getOriginalFilename());
+        File convertFile = new File(file.getOriginalFilename());
         if (convertFile.createNewFile()) {
             try (FileOutputStream fos = new FileOutputStream(convertFile)) {
                 fos.write(file.getBytes());
