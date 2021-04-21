@@ -5,6 +5,7 @@ import com.webproject.chatservice.dto.ChatMessageRequestDto;
 import com.webproject.chatservice.models.ChatMessage;
 import com.webproject.chatservice.models.User;
 import com.webproject.chatservice.service.ChatMessageService;
+import com.webproject.chatservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Header;
@@ -20,11 +21,13 @@ import java.util.TimeZone;
 public class ChatMessageController {
 
     private final ChatMessageService chatMessageService;
+    private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    public ChatMessageController(ChatMessageService chatMessageService, JwtTokenProvider jwtTokenProvider) {
+    public ChatMessageController(ChatMessageService chatMessageService, UserService userService, JwtTokenProvider jwtTokenProvider) {
         this.chatMessageService = chatMessageService;
+        this.userService = userService;
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
@@ -49,7 +52,7 @@ public class ChatMessageController {
         messageRequestDto.setCreatedAt(dateResult);
 
         // DTO 로 채팅 메시지 객체 생성
-        ChatMessage chatMessage = new ChatMessage(messageRequestDto);
+        ChatMessage chatMessage = new ChatMessage(messageRequestDto, userService);
 
         // 웹소켓 통신으로 채팅방 토픽 구독자들에게 메시지 보내기
         chatMessageService.sendChatMessage(chatMessage);
