@@ -39,6 +39,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                 return;
             }
             SecurityContextHolder.getContext().setAuthentication(null);
+//            ((HttpServletResponse) response).sendRedirect("http://gaemangtalk.site");
         }
         chain.doFilter(request, response);
     }

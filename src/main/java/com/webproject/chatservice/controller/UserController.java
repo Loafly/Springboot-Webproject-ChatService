@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -158,11 +159,12 @@ public class UserController {
         return userService.myProfileUpdate(userId, userProfileRequestDto);
     }
 
-    @GetMapping("/user/forbidden")
-    public String forbidden() {
+    @GetMapping("/forbidden")
+    public RedirectView forbidden() {
         System.out.println("hello forbidden");
-
-        return "redirect:http://gaemangtalk.site";
+        RedirectView redirectView = new RedirectView();
+        redirectView.setUrl("http://gaemangtalk.site");
+        return redirectView;
     }
 
     // 마이페이지 프로필 사진 수정
