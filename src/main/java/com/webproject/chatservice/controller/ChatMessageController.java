@@ -40,8 +40,8 @@ public class ChatMessageController {
         User user = jwtTokenProvider.getAuthenticationUser(token);
         messageRequestDto.setUserId(user.getId());
         messageRequestDto.setSender(user.getUsername());
-        messageRequestDto.setSenderEmail(user.getEmail());
-        messageRequestDto.setSenderImg(user.getProfileUrl());
+//        messageRequestDto.setSenderEmail(user.getEmail());
+//        messageRequestDto.setSenderImg(user.getProfileUrl());
 
         // 메시지 생성 시간 삽입
         SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm");
