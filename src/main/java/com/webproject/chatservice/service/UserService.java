@@ -49,7 +49,8 @@ public class UserService {
     }
 
     public User findById(Long id) {
-        return userRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("찾는 유저가 없습니다"));
+        User user = userRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("찾는 유저가 없습니다"));
+        return user;
     }
 
     public User findByUsername(String username) {

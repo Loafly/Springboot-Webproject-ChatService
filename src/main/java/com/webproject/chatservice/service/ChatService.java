@@ -17,6 +17,7 @@ public class ChatService {
     private final ChannelTopic channelTopic;
     private final RedisTemplate redisTemplate;
     private final ChatMessageRepository chatMessageRepository;
+    private final UserService userService;
 
     // destination 정보에서 roomId 추출
     public String getRoomId(String destination) {
@@ -43,6 +44,7 @@ public class ChatService {
         ChatMessage message = new ChatMessage();
         message.setType(chatMessage.getType());
         message.setRoomId(chatMessage.getRoomId());
+        message.setUser(userService.findById(chatMessage.getUserId()));
         message.setUserId(chatMessage.getUserId());
         message.setSender(chatMessage.getSender());
         message.setSenderEmail(chatMessage.getSenderEmail());
