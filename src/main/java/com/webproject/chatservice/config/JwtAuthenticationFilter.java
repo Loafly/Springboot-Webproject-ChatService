@@ -31,9 +31,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
             // SecurityContext 에 Authentication 객체를 저장합니다.
             SecurityContextHolder.getContext().setAuthentication(authentication);
-        }
-        else
-        {
+        } else {
             if (((HttpServletRequest) request).getMethod().toString().equals("OPTIONS"))
             {
                 ((HttpServletResponse) response).addHeader("Access-Control-Allow-Origin", "*");
