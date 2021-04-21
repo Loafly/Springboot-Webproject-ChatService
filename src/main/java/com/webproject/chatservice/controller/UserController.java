@@ -159,13 +159,13 @@ public class UserController {
         return userService.myProfileUpdate(userId, userProfileRequestDto);
     }
 
-    @GetMapping("/forbidden")
-    public RedirectView forbidden() {
-        System.out.println("hello forbidden");
-        RedirectView redirectView = new RedirectView();
-        redirectView.setUrl("http://gaemangtalk.site");
-        return redirectView;
-    }
+//    @GetMapping("/forbidden")
+//    public RedirectView forbidden() {
+//        System.out.println("hello forbidden");
+//        RedirectView redirectView = new RedirectView();
+//        redirectView.setUrl("http://gaemangtalk.site");
+//        return redirectView;
+//    }
 
     // 마이페이지 프로필 사진 수정
 //    @PutMapping("/api/user/profile/{userId}/img")
