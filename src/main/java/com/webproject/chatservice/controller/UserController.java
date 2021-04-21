@@ -10,14 +10,11 @@ import com.webproject.chatservice.models.User;
 import com.webproject.chatservice.models.UserDetailsImpl;
 import com.webproject.chatservice.service.UserService;
 
-import com.webproject.chatservice.utils.Uploader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -29,13 +26,11 @@ public class UserController {
 
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
-    private final Uploader uploader;
 
     @Autowired
-    public UserController(UserService userService, JwtTokenProvider jwtTokenProvider, Uploader uploader) {
+    public UserController(UserService userService, JwtTokenProvider jwtTokenProvider) {
         this.userService = userService;
         this.jwtTokenProvider = jwtTokenProvider;
-        this.uploader = uploader;
     }
 
     //회원 가입

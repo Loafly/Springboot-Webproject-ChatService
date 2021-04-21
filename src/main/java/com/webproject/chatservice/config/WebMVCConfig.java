@@ -13,7 +13,6 @@ public class WebMVCConfig implements WebMvcConfigurer {
     @Bean
     public FilterRegistrationBean getFilterRegistrationBean(){
         FilterRegistrationBean registrationBean = new FilterRegistrationBean(new CORSFilter());
-        registrationBean.addUrlPatterns("/api/*");
         registrationBean.addUrlPatterns("/**");
         return registrationBean;
     }

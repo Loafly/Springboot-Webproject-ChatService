@@ -5,7 +5,6 @@ import com.webproject.chatservice.dto.ChatMessageRequestDto;
 import com.webproject.chatservice.models.ChatMessage;
 import com.webproject.chatservice.models.User;
 import com.webproject.chatservice.service.ChatMessageService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;

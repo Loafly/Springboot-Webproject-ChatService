@@ -1,6 +1,5 @@
 package com.webproject.chatservice.config;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,7 +36,6 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         {
             if (((HttpServletRequest) request).getMethod().toString().equals("OPTIONS"))
             {
-                System.out.println("option");
                 ((HttpServletResponse) response).addHeader("Access-Control-Allow-Origin", "*");
                 ((HttpServletResponse) response).addHeader("Access-Control-Allow-Methods","*");
                 ((HttpServletResponse) response).addHeader("Access-Control-Allow-Headers","*");

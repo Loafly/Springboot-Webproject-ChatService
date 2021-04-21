@@ -39,12 +39,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.headers().frameOptions().disable();
-//        http.cors().configurationSource(corsConfigurationSource());
-//        http.headers().frameOptions().sameOrigin();
         http.authorizeRequests()
                 // login 없이 허용
-//                .antMatchers("/**").permitAll()
-//                .antMatchers("/api/user/**").permitAll()
                 .antMatchers("/chatting/**").permitAll()
                 .antMatchers("/api/user/login").permitAll()
                 .antMatchers("/api/user/kakaoLogin").permitAll()
@@ -52,9 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/signup/emailCheck").permitAll()
                 .antMatchers("/api/user/findPassword").permitAll()
                 .antMatchers("/api/user/changePassword").permitAll()
-//                .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/api/chat/message").permitAll()
-                .antMatchers("/forbidden").permitAll()
 
                 // 그 외 모든 요청은 인증과정 필요
                 .anyRequest().authenticated()

@@ -16,16 +16,11 @@ public class KakaoOAuth2 {
     public KakaoUserInfo getUserInfo(String accessToken) {
         // 2. 액세스 토큰 -> 카카오 사용자 정보
         KakaoUserInfo userInfo = getUserInfoByToken(accessToken);
-        System.out.println("userInfo = " + userInfo);
-        System.out.println("userInfo.getEmail() = " + userInfo.getEmail());
-        System.out.println("userInfo.getNickname() = " + userInfo.getNickname());
 
         return userInfo;
     }
 
     private KakaoUserInfo getUserInfoByToken(String accessToken) {
-        System.out.println("KaKao getUserInfoByToken accessToken = " + accessToken);
-
         // HttpHeader 오브젝트 생성
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + accessToken);
@@ -50,7 +45,6 @@ public class KakaoOAuth2 {
         {
             email = body.getJSONObject("kakao_account").getString("email");
         }
-        System.out.println("email = " + email);
         String nickname = body.getJSONObject("properties").getString("nickname");
 
         if (email == null)

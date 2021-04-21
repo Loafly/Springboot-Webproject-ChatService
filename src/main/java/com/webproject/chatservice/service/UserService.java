@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -42,10 +41,6 @@ public class UserService {
 
     public List<User> findAll(){
         return userRepository.findAll();
-    }
-
-    public Optional<User> findByEmail(String email) {
-        return userRepository.findByEmail(email);
     }
 
     public User findById(Long id) {
@@ -90,7 +85,6 @@ public class UserService {
         try {
             return mailUtil.sendMail(user);
         } catch (Exception e) {
-            System.out.println(e);
             return 0;
         }
     }
@@ -110,7 +104,6 @@ public class UserService {
     }
 
     public JsonObject kakaoLogin(String accessToken) {
-        System.out.println("kakaoLogin accessToken = " + accessToken);
         // 카카오 OAuth2 를 통해 카카오 사용자 정보 조회
         KakaoUserInfo userInfo = kakaoOAuth2.getUserInfo(accessToken);
         Long kakaoId = userInfo.getId();
@@ -182,13 +175,4 @@ public class UserService {
         userRepository.save(user);
         return user;
     }
-
-//    public User myProfileUrlUpdate(Long id, String profileUrl) {
-//        User user = userRepository.findById(id).orElseThrow(
-//                ()-> new IllegalArgumentException("해당 아이디가 존재하지 않습니다")
-//        );
-//        user.updateProfileUrl(profileUrl);
-//        userRepository.save(user);
-//        return user;
-//    }
 }

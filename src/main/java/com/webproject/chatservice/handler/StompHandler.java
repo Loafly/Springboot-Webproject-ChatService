@@ -27,10 +27,6 @@ public class StompHandler implements ChannelInterceptor {
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
-        System.out.println("stomp handler===============================================================================================================");
-        System.out.println("accessor.getCommand() = " + accessor.getCommand());
-        System.out.println("message.toString() = " + message.toString());
-        System.out.println("accessor.getFirstNativeHeader(token) = " + accessor.getFirstNativeHeader("token"));
 
         if (StompCommand.CONNECT == accessor.getCommand()) { // websocket 연결요청
             String jwtToken = accessor.getFirstNativeHeader("token");

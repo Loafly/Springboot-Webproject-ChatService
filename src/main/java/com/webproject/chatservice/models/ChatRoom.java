@@ -4,7 +4,6 @@ import com.webproject.chatservice.dto.ChatRoomRequestDto;
 import com.webproject.chatservice.service.UserService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.messaging.handler.annotation.MessageMapping;
 
 import javax.persistence.*;
 import java.util.Set;
