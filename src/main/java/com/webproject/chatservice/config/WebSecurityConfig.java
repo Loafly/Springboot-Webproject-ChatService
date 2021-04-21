@@ -53,12 +53,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/signup/emailCheck").permitAll()
                 .antMatchers("/api/user/findPassword").permitAll()
                 .antMatchers("/api/user/changePassword").permitAll()
-                .antMatchers("/h2-console/**").permitAll()
+                .antMatchers("/user/forbidden").permitAll()
+//                .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/api/chat/message").permitAll()
                 // 그 외 모든 요청은 인증과정 필요
                 .anyRequest().authenticated()
-//                .and()
-//                .exceptionHandling().accessDeniedPage("/403")
+                .and()
+                .exceptionHandling()
+                .accessDeniedPage("/user/forbidden")
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class);
