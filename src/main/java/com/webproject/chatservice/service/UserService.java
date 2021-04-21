@@ -49,7 +49,9 @@ public class UserService {
     }
 
     public User findById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("찾는 유저가 없습니다"));
+        User user = userRepository.findById(id).orElseThrow(
+                ()-> new IllegalArgumentException("찾는 유저가 없습니다")
+        );
         return user;
     }
 
@@ -68,8 +70,7 @@ public class UserService {
     }
 
     public void signupValidCheck(String Email){
-        if (userRepository.findByEmail(Email).isPresent())
-        {
+        if (userRepository.findByEmail(Email).isPresent()) {
             throw new IllegalArgumentException("해당 이메일은 이미 가입된 회원이 있습니다.");
         }
     }
@@ -86,28 +87,24 @@ public class UserService {
     public int findPasswordByEamil(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
-        try{
+        try {
             return mailUtil.sendMail(user);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(e);
             return 0;
         }
     }
 
     @Transactional
-    public Long updateUserPassword(String email, String password){
+    public Long updateUserPassword(String email, String password) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
-
         user.setPassword(passwordEncoder.encode(password));
         return user.getId();
     }
 
 
-    public Long deleteUser(Long id)
-    {
+    public Long deleteUser(Long id) {
         userRepository.deleteById(id);
         return id;
     }
@@ -129,8 +126,7 @@ public class UserService {
             // 카카오 이메일과 동일한 이메일을 가진 회원이 있는지 확인
             User sameEmailUser = null;
 
-            if (email != null)
-            {
+            if (email != null) {
                 sameEmailUser = userRepository.findByEmail(email).orElse(null);
             }
             if (sameEmailUser != null) {
@@ -139,7 +135,6 @@ public class UserService {
                 // 카카오 Id 를 회원정보에 저장
                 kakaoUser.setKakaoId(kakaoId);
                 userRepository.save(kakaoUser);
-
             } else {
                 // 카카오 정보로 회원가입
                 // username = 카카오 nickname
@@ -151,14 +146,11 @@ public class UserService {
                 // ROLE = 사용자
                 UserRole role = UserRole.USER;
 
-                if (email != null)
-                {
+                if (email != null) {
                     kakaoUser = new User(username, encodedPassword, email, role, kakaoId);
-                }
-                else{
+                } else {
                     kakaoUser = new User(username, encodedPassword, role, kakaoId);
                 }
-
                 userRepository.save(kakaoUser);
             }
         }
@@ -167,12 +159,10 @@ public class UserService {
         UserDetailsImpl userDetails = new UserDetailsImpl(kakaoUser);
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         JsonObject jsonObj = new JsonObject();
         jsonObj.addProperty("token", jwtTokenProvider.createToken(userDetails.getUser().getId()));
         jsonObj.addProperty("username", userDetails.getUser().getUsername());
         jsonObj.addProperty("userid", userDetails.getUser().getId());
-
         return jsonObj;
     }
 
@@ -189,7 +179,6 @@ public class UserService {
         if (userProfileRequestDto.getProfileUrl() != null) {
             user.updateProfileUrl(userProfileRequestDto);
         }
-
         userRepository.save(user);
         return user;
     }

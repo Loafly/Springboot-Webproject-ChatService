@@ -19,8 +19,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    public WebSecurityConfig (JwtTokenProvider jwtTokenProvider)
-    {
+    public WebSecurityConfig (JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 

@@ -3,7 +3,7 @@ package com.webproject.chatservice.handler;
 import com.webproject.chatservice.config.JwtTokenProvider;
 import com.webproject.chatservice.models.ChatMessage;
 import com.webproject.chatservice.service.ChatRoomService;
-import com.webproject.chatservice.service.ChatService;
+import com.webproject.chatservice.service.ChatMessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.Message;
@@ -13,7 +13,6 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
 
-import java.security.Principal;
 import java.util.Optional;
 
 @Slf4j
@@ -23,7 +22,7 @@ public class StompHandler implements ChannelInterceptor {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final ChatRoomService chatRoomService;
-    private final ChatService chatService;
+    private final ChatMessageService chatService;
 
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {

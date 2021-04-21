@@ -10,8 +10,7 @@ public class KakaoUserInfo {
     String email;
     String nickname;
 
-    public KakaoUserInfo(Long id, String nickname)
-    {
+    public KakaoUserInfo(Long id, String nickname) {
         this.id = id;
         this.nickname = nickname;
     }

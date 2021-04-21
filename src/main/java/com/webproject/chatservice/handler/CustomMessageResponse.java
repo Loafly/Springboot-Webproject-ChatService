@@ -15,17 +15,16 @@ public class CustomMessageResponse {
     private int status;
     private String errorMessage;
 
-    public CustomMessageResponse(String errorMessage, int status)
-    {
+    public CustomMessageResponse(String errorMessage, int status) {
         this.time = LocalDateTime.now();
         this.errorMessage = errorMessage;
         this.status = status;
     }
 
-    public ResponseEntity SendResponse()
-    {
+    public ResponseEntity SendResponse() {
         return ResponseEntity
                 .status(this.getStatus())
                 .body(this);
     }
+
 }

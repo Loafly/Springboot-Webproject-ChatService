@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Component
 public class KakaoOAuth2 {
+
     public KakaoUserInfo getUserInfo(String accessToken) {
         // 2. 액세스 토큰 -> 카카오 사용자 정보
         KakaoUserInfo userInfo = getUserInfoByToken(accessToken);

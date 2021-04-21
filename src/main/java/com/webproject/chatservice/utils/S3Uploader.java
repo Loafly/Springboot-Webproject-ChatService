@@ -14,14 +14,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 @Slf4j // 로깅을 위한 어노테이션
-@RequiredArgsConstructor // final 변수에 대한 의존성을 추가합니다.
 @Component // 빈 등록을 위한 어노테이션
+@RequiredArgsConstructor // final 변수에 대한 의존성을 추가합니다.
 public class S3Uploader implements Uploader {
 
     private final AmazonS3Client amazonS3Client;
 
     @Value("${cloud.aws.s3.bucket}")  // 프로퍼티에서 cloude.aws.s3.bucket에 대한 정보를 불러옵니다.
-    public String bucket;             // 저는 .properties가 아닌 .yml을 이용하였습니다!
+    public String bucket;
 
     public String upload(MultipartFile multipartFile, String dirName) throws IOException {
         File convertedFile = convert(multipartFile);

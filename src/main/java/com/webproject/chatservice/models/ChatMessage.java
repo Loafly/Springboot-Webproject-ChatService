@@ -33,6 +33,7 @@ public class ChatMessage {
     @JoinColumn(name = "user_id_joined")
     private User user;
 
+    // Redis MessageListener 로 뒙소켓을 통해 바로 채팅방에 메시지를 전달해주기 위한 값을 따로 설정해주었다
     @Column
     private Long userId;
 

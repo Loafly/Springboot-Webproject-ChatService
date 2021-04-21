@@ -11,7 +11,6 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class ChatRoomService {
 
     @Resource(name = "redisTemplate")
@@ -20,6 +19,11 @@ public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
     private final UserService userService;
     public static final String ENTER_INFO = "ENTER_INFO"; // 채팅룸에 입장한 클라이언트의 sessionId 와 채팅룸 id 를 맵핑한 정보 저장
+
+    public ChatRoomService(ChatRoomRepository chatRoomRepository, UserService userService) {
+        this.chatRoomRepository = chatRoomRepository;
+        this.userService = userService;
+    }
 
     // 채팅방 생성
     public ChatRoom createChatRoom(ChatRoomRequestDto requestDto) {
@@ -33,17 +37,17 @@ public class ChatRoomService {
         return chatRoomRepository.findAllByOrderByCreatedAtDesc();
     }
 
+    // 카테고리별 채팅방 조회
+    public List<ChatRoom> getAllChatRoomsByCategory(String category) {
+        return chatRoomRepository.findByCategory(category);
+    }
+
     // 개별 채팅방 조회
     public ChatRoom getEachChatRoom(Long id) {
         ChatRoom chatRoom = chatRoomRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("찾는 채팅방이 존재하지 않습니다.")
         );
         return chatRoom;
-    }
-
-    // 카테고리별 채팅방 조회
-    public List<ChatRoom> getAllChatRoomsByCategory(String category) {
-        return chatRoomRepository.findByCategory(category);
     }
 
     // 유저가 입장한 채팅방 ID 와 유저 세션 ID 맵핑 정보 저장

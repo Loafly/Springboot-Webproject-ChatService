@@ -74,9 +74,11 @@ public class User {
     public void updateUsername(UserProfileRequestDto userProfileRequestDto) {
         this.username = userProfileRequestDto.getUsername();
     }
+
     public void updateEmail(UserProfileRequestDto userProfileRequestDto) {
         this.email = userProfileRequestDto.getEmail();
     }
+
     public void updateProfileUrl(UserProfileRequestDto userProfileRequestDto) {
         this.profileUrl = userProfileRequestDto.getProfileUrl();
     }

@@ -8,9 +8,8 @@ import redis.embedded.RedisServer;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-/**
- * 로컬 환경일경우 내장 레디스가 실행된다.
- */
+// 내장 레디스를 사용하기 위한 코드
+// local 환경에서 여타의 CRUD를 테스트해보기 위해서는 Profile 을 local 로 설정해주어야 한다
 //@Profile("local")
 @Profile("15.164.97.250")
 @Configuration
@@ -33,6 +32,7 @@ public class EmbeddedRedisConfig {
             redisServer.stop();
         }
     }
+
 }
 
 
