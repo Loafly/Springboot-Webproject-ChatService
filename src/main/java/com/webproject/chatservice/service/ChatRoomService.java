@@ -41,6 +41,11 @@ public class ChatRoomService {
         return chatRoom;
     }
 
+    // 카테고리별 채팅방 조회
+    public List<ChatRoom> getAllChatRoomsByCategory(String category) {
+        return chatRoomRepository.findByCategory(category);
+    }
+
     // 유저가 입장한 채팅방 ID 와 유저 세션 ID 맵핑 정보 저장
     public void setUserEnterInfo(String sessionId, String roomId) {
         hashOpsEnterInfo.put(ENTER_INFO, sessionId, roomId);

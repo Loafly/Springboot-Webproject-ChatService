@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Entity
@@ -24,6 +25,9 @@ public class ChatRoom extends Timestamped {
     @Column
     private String chatRoomImg;
 
+    @ElementCollection
+    private Set<String> category;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
@@ -31,6 +35,7 @@ public class ChatRoom extends Timestamped {
     public ChatRoom(ChatRoomRequestDto requestDto, UserService userService) {
         this.chatRoomName = requestDto.getChatRoomName();
         this.chatRoomImg = requestDto.getChatRoomImg();
+        this.category = requestDto.getCategory();
         this.user = userService.findById(requestDto.getUserId());
     }
 

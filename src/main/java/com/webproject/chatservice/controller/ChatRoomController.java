@@ -50,4 +50,9 @@ public class ChatRoomController {
         return chatService.getChatMessageByRoomId(roomId, pageable);
     }
 
+    @GetMapping("/rooms/search/{category}")
+    public List<ChatRoom> getChatRoomsByCategory(@PathVariable String category) {
+        return chatRoomService.getAllChatRoomsByCategory(category);
+    }
+
 }
