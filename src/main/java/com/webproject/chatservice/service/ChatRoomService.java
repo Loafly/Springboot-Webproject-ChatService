@@ -4,6 +4,7 @@ import com.webproject.chatservice.dto.ChatRoomRequestDto;
 import com.webproject.chatservice.models.ChatRoom;
 import com.webproject.chatservice.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ public class ChatRoomService {
     private final UserService userService;
     public static final String ENTER_INFO = "ENTER_INFO"; // 채팅룸에 입장한 클라이언트의 sessionId 와 채팅룸 id 를 맵핑한 정보 저장
 
+    @Autowired
     public ChatRoomService(ChatRoomRepository chatRoomRepository, UserService userService) {
         this.chatRoomRepository = chatRoomRepository;
         this.userService = userService;
