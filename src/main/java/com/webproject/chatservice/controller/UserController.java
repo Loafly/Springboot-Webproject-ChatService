@@ -17,7 +17,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Map;
 
 @CrossOrigin(origins = "*")
@@ -66,9 +65,6 @@ public class UserController {
             User user = userService.loginValidCheck(userLoginRequestDto);
             JsonObject jsonObj = new JsonObject();
             jsonObj.addProperty("token", jwtTokenProvider.createToken(user.getId()));
-            jsonObj.addProperty("username", user.getUsername());
-            jsonObj.addProperty("userid", user.getId());
-            jsonObj.addProperty("userProfileUrl", user.getProfileUrl());
             return ResponseEntity.ok().body(jsonObj.toString());
         } catch (Exception ignore) {
             CustomMessageResponse customMessageResponse = new CustomMessageResponse(ignore.getMessage(),HttpStatus.BAD_REQUEST.value());
@@ -109,18 +105,6 @@ public class UserController {
         String email = param.get("email").toString();
         String password = param.get("password").toString();
         return userService.updateUserPassword(email,password);
-    }
-
-    //회원 조회
-    @GetMapping("/api/users")
-    public List<User> getUser(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return userService.findAll();
-    }
-
-    //회원 삭제
-    @DeleteMapping("/api/user/delete")
-    public Long deleteUsers(@RequestBody Map<String, Object> param) {
-        return userService.deleteUser((Long) param.get("id"));
     }
 
     // 마이페이지 프로필 조회

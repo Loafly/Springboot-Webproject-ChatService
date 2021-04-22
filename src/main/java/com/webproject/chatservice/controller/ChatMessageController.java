@@ -6,7 +6,6 @@ import com.webproject.chatservice.models.ChatMessage;
 import com.webproject.chatservice.models.User;
 import com.webproject.chatservice.service.ChatMessageService;
 import com.webproject.chatservice.service.UserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -40,8 +39,6 @@ public class ChatMessageController {
         User user = jwtTokenProvider.getAuthenticationUser(token);
         messageRequestDto.setUserId(user.getId());
         messageRequestDto.setSender(user.getUsername());
-//        messageRequestDto.setSenderEmail(user.getEmail());
-//        messageRequestDto.setSenderImg(user.getProfileUrl());
 
         // 메시지 생성 시간 삽입
         SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm");

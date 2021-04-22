@@ -12,8 +12,6 @@ public class ChatMessageRequestDto {
     private String roomId;
     private Long userId;
     private String sender;
-    private String senderEmail;
-    private String senderImg;
     private String message;
     private String createdAt;
 
