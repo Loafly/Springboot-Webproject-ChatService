@@ -148,12 +148,14 @@ com.clone.daangnclone
 
 Entity Table Structure
 ----------------------
+(업로드 예정)
 
 
 </br>
 
 API Structure
 -------------
+(업로드 예정)
 
 
 </br>
@@ -201,8 +203,6 @@ public class ChatRoom extends Timestamped {
 ```
 - 채팅방 이름, 채팅방 대표 이미지, 채팅방 카테고리 항목을 칼럼으로 만들었습니다. 
 - 채팅방을 생성한 사용자 정보를 가져오기 위해 @ManyToOne으로 User Entity와 연관관계를 설정하였습니다.
-  
-
 - ```@ElementCollection``` : 카테고리를 여러 개 리스트로 가져오기 위한 설정
 - ```@ManyToOne```: User 객체 하나에 여러 ChatRoom 객체가 연관될 수 있다는 연관관계 설정
 
@@ -335,8 +335,6 @@ Service Layer를 거치도록 하여 ChatRoom 관련 비즈니스 로직들을 S
 ```
 - 하나의 POST 요청, 네 개의 GET 요청을 관리하는 Controller 입니다.
 - 메소드 명만 보고도 최대한 해당 메소드가 처리하는 로직을 파악할 수 있게 작명하였습니다.
-  
-
 - ```@PostMapping``` : POST 요청
 - ```@GetMapping``` : GET 요청
 
@@ -395,8 +393,6 @@ Service Layer를 거치도록 하여 ChatRoom 관련 비즈니스 로직들을 S
 - ```setApplicationDestinationPrefixes```는 client의 ```SEND```요청을 처리합니다.
 - ```enableSimpleBroker```는 해당 경로로 ```SimpleBroker```를 등록합니다.
 ```SimpleBroker```는 해당하는 경로를 ```SUBSCRIBE```하는 client에게 메시지를 전달하는 작업을 수행합니다.
-  
-
 - ```@Configuration``` : 클래스 선언 앞에 작성. 해당 클래스가 Bean 설정을 할 것이라는 것을 암시. ```@Component```를 포함하는 어노테이션
 - ```@EnableWebSocketMessageBroker``` : WebSocket 서버를 활성화 하는데 사용
 - 해당 웹소켓 통신은 STOMP 프로토콜을 사용합니다.
@@ -568,7 +564,40 @@ Unknown User로 퇴장 메시지가 발송되는 것을 막기 위해 분기처�
 - ```StompHandler```를 통과한 채팅메시지 정보는 ```ChatMessageController```에 도착하게 됩니다.
 - 일반적인 CRUD에서 사용하는 Mapping 어노테이션과는 다르게 ```@MessageMapping```으로 처리됩니다.
 - 헤더에 담긴 토큰에서 정보를 꺼내 메시지를 보낸 사용자를 맵핑합니다.
-- 메시지를 
+- 메시지를 채팅방 토픽 구독자들에게 보낸 후 DB 저장이 일어나기 때문에 메시지 생성 시간을 DB 저장 시점이 아닌 Controller에 메시지가 오고 
+  다시 클라이언트로 보내지기 전에 찍어야 하기 때문에 Controller에서 처리하였습니다.
+- 이후 ```ChatMessageService``` 내 클래스에 구현된 메서드들을 활용해 웹소켓 통신으로 구독자들에게 메시지를 발송하고, 뒤이어 MySql DB에 메시지 내용들을 저장합니다.
+
+### 3. ChatMessageService
+```java
+    // 채팅방에 메시지 발송
+    public void sendChatMessage(ChatMessage chatMessage) {
+        if (ChatMessage.MessageType.ENTER.equals(chatMessage.getType())) {
+            chatMessage.setMessage(chatMessage.getSender() + "님이 방에 입장했습니다.");
+            chatMessage.setSender("[알림]");
+        } else if (ChatMessage.MessageType.QUIT.equals(chatMessage.getType())) {
+            chatMessage.setMessage(chatMessage.getSender() + "님이 방에서 나갔습니다.");
+            chatMessage.setSender("[알림]");
+        }
+        redisTemplate.convertAndSend(channelTopic.getTopic(), chatMessage);
+    }
+
+    // ChatMessage DB 테이블에 채팅 메시지 내용 저장
+    public void save(ChatMessage chatMessage) {
+        ChatMessage message = new ChatMessage();
+        message.setType(chatMessage.getType());
+        message.setRoomId(chatMessage.getRoomId());
+        message.setUser(userService.findById(chatMessage.getUserId()));
+        message.setUserId(chatMessage.getUserId());
+        message.setSender(chatMessage.getSender());
+        message.setMessage(chatMessage.getMessage());
+        message.setCreatedAt(chatMessage.getCreatedAt());
+        chatMessageRepository.save(message);
+    }
+```
+- ```ChatMessageService```에 구현된 두 개의 주요 메서드입니다.
+- ```sendChatMessage``` 메서드는 들어오는 메시지를 TYPE 별로 구분해 입퇴장 메시지 내용을 추가합니다.
+- redisTemplate에 구현된 ```convertAndSend``` 메서드를 활용하여 해당 메시지가 SEND된 채팅방 구독자들에게 메시지를 발송합니다.
 
 
 </br>
@@ -578,18 +607,6 @@ Unknown User로 퇴장 메시지가 발송되는 것을 막기 위해 분기처�
 
 ###UserSignupRequestDto
 ```java
-package com.webproject.chatservice.dto;
-
-import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -957,19 +974,6 @@ public class JwtTokenProvider {
 --------------------
 ###WebSecurityConfig
 ```java
-package com.webproject.chatservice.config;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 @Configuration
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
 @EnableGlobalMethodSecurity(securedEnabled = true)
@@ -1021,20 +1025,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 ###JwtAuthenticationFilter
 ```java
-package com.webproject.chatservice.config;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.filter.GenericFilterBean;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
 public class JwtAuthenticationFilter extends GenericFilterBean {
 
     private final JwtTokenProvider jwtTokenProvider;
@@ -1077,3 +1067,89 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 마이 페이지 관련 기능
 -----------------
 
+### S3Uploader
+```java
+    @Slf4j // 로깅을 위한 어노테이션
+    @Component // 빈 등록을 위한 어노테이션
+    @RequiredArgsConstructor // final 변수에 대한 의존성을 추가합니다.
+    public class S3Uploader implements Uploader {
+    
+        private final AmazonS3Client amazonS3Client;
+    
+        @Value("${cloud.aws.s3.bucket}")  // 프로퍼티에서 cloude.aws.s3.bucket에 대한 정보를 불러옵니다.
+        public String bucket;
+    
+        public String upload(MultipartFile multipartFile, String dirName) throws IOException {
+            File convertedFile = convert(multipartFile);
+            return upload(convertedFile, dirName);
+        }
+    
+        private String upload(File uploadFile, String dirName) {
+            String fileName = dirName + "/" + uploadFile.getName();
+            String uploadImageUrl = putS3(uploadFile, fileName);
+            removeNewFile(uploadFile);
+            return uploadImageUrl;
+        }
+    
+        private String putS3(File uploadFile, String fileName) {
+            amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
+            return amazonS3Client.getUrl(bucket, fileName).toString();
+        }
+    
+        private void removeNewFile(File targetFile) {
+            if (targetFile.delete()) {
+                return;
+            }
+            log.info("임시 파일이 삭제 되지 못했습니다. 파일 이름: {}", targetFile.getName());
+        }
+    
+        private File convert(MultipartFile file) throws IOException {
+            File convertFile = new File(file.getOriginalFilename());
+            if (convertFile.createNewFile()) {
+                try (FileOutputStream fos = new FileOutputStream(convertFile)) {
+                    fos.write(file.getBytes());
+                }
+                return convertFile;
+            }
+            throw new IllegalArgumentException(String.format("파일 변환이 실패했습니다. 파일 이름: %s", file.getName()));
+        }
+    
+    }
+```
+- 클라이언트로부터 받은 파일데이터를 S3 이미지 스토리지에 업로드하고, 받은 파일 데이터를 삭제안 뒤 URL만을 반환해주는 Util Class 입니다.
+
+### S3 Controller
+```java
+    @PostMapping("/api/s3upload")
+    public String imgUpload(@RequestParam("data") MultipartFile file) throws IOException {
+        String profileUrl = uploader.upload(file, "static");
+        return profileUrl;
+    }
+```
+- 마이페이지 프로필을 수정할 때 바로 파일을 받아서 DB에 넣어도 되지만, 이렇게 POST 메서드를 따로 만든 이유는 재사용성 때문입니다.
+- 채팅방 대표이미지 업로드 등 다른 기능에서도 해당 URL을 사용해 이미지 URL을 반환받은 후 JSON 형태로 POST, PUT 요청을 다시 보냅니다.
+이럴 경우, 백엔드 입장에서는 여러 Controller에서 Parameter 마다 파일을 받는다고 설정해주지 않아도 되어 좋습니다. 
+  프론트엔드 입장에서도 미리보기 등을 구현할 수 있어 기능성 측면에서 좋습니다.
+
+### UserController
+```java
+    // 마이페이지 프로필 조회
+    // token 키 값으로 Header 에 실어주시면 된다!!
+    @GetMapping("/api/user/profile")
+    public User getMyProfile(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return userService.findById(userDetails.getUser().getId());
+    }
+
+    // 마이페이지 프로필 수정
+    // username, email, profileurl 만 바꿀 수 있도록 함
+    @PutMapping("api/user/profile/{userId}")
+    public Object updateMyProfile(@PathVariable Long userId, @Valid @RequestBody UserProfileRequestDto userProfileRequestDto) {
+        try {
+            return userService.myProfileUpdate(userId, userProfileRequestDto);
+        } catch (Exception ignore) {
+            CustomMessageResponse customMessageResponse = new CustomMessageResponse(ignore.getMessage(),HttpStatus.BAD_REQUEST.value());
+            return customMessageResponse.SendResponse();
+        }
+    }
+```
+- 다음은 프로필 조회, 수정 기능을 담고 있는 UserController의 일부입니다.
