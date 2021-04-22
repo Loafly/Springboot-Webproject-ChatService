@@ -605,7 +605,7 @@ Unknown User로 퇴장 메시지가 발송되는 것을 막기 위해 분기처�
 회원 가입 기능
 ----------------
 
-###UserSignupRequestDto
+### UserSignupRequestDto
 ```java
 @Getter
 @Setter
@@ -636,7 +636,7 @@ public class UserSignupRequestDto {
 - @Email : 이메일 형식이 아닌 경우 Exception 처리
 - @Valid : Controller단에서 위와같은 Exception 처리가 있는지 없는지 확인
 
-###UserController
+### UserController
 ```java
     //회원 가입시 이메일 중복체크
     @PostMapping("/api/user/signup/emailCheck")
@@ -652,7 +652,7 @@ public class UserSignupRequestDto {
     }
 ```
 
-###UserService
+### UserService
 ```java
     public void signupValidCheck(String Email){
         if (userRepository.findByEmail(Email).isPresent()) {
@@ -666,7 +666,7 @@ public class UserSignupRequestDto {
 
 비밀번호 찾기 기능
 ----------------
-###UserController
+### UserController
 ```java
     //비밀번호 찾기
     @PostMapping("/api/user/findPassword")
@@ -691,7 +691,7 @@ public class UserSignupRequestDto {
             }
 ```
 
-###UserService
+### UserService
 ```java
     public int findPasswordByEamil(String email) {
         User user = userRepository.findByEmail(email)
@@ -712,7 +712,7 @@ public class UserSignupRequestDto {
             }
 ```
 
-###MailUtil
+### MailUtil
 ```java
 @Component
 //메일을 보낼 클래스
@@ -794,7 +794,7 @@ public class MailUtil {
 로그인 기능
 --------------------
 
-###JwtTokenProvider
+### JwtTokenProvider
 ```java
 @Component
 public class JwtTokenProvider {
@@ -871,7 +871,7 @@ public class JwtTokenProvider {
 }
 ```
 
-###UserController
+### UserController
 ```java
     //로그인
     @PostMapping("/api/user/login")
@@ -901,7 +901,7 @@ public class JwtTokenProvider {
         }
 ```
 
-###UserService
+### UserService
 ```java
     public User loginValidCheck(UserLoginRequestDto userLoginRequestDto){
         User user = userRepository.findByEmail(userLoginRequestDto.getEmail())
@@ -972,7 +972,7 @@ public class JwtTokenProvider {
 
 보안관련 기능
 --------------------
-###WebSecurityConfig
+### WebSecurityConfig
 ```java
 @Configuration
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
@@ -1023,7 +1023,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 }
 ```
 
-###JwtAuthenticationFilter
+### JwtAuthenticationFilter
 ```java
 public class JwtAuthenticationFilter extends GenericFilterBean {
 
