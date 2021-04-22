@@ -40,12 +40,6 @@ public class ChatMessage {
     @Column
     private String sender;
 
-//    @Column
-//    private String senderEmail;
-//
-//    @Column
-//    private String senderImg;
-
     @Column
     private String message;
 
@@ -59,8 +53,6 @@ public class ChatMessage {
         this.user = null;
         this.userId = userId;
         this.sender = sender;
-//        this.senderEmail = senderEmail;
-//        this.senderImg = senderImg;
         this.message = message;
         this.createdAt = createdAt;
     }
@@ -72,8 +64,6 @@ public class ChatMessage {
         this.user = null;
         this.userId = chatMessageRequestDto.getUserId();
         this.sender = chatMessageRequestDto.getSender();
-//        this.senderEmail = chatMessageRequestDto.getSenderEmail();
-//        this.senderImg = chatMessageRequestDto.getSenderImg();
         this.message = chatMessageRequestDto.getMessage();
         this.createdAt = chatMessageRequestDto.getCreatedAt();
     }
@@ -85,8 +75,6 @@ public class ChatMessage {
         this.user = userService.findById(chatMessageRequestDto.getUserId());
         this.userId = chatMessageRequestDto.getUserId();
         this.sender = chatMessageRequestDto.getSender();
-//        this.senderEmail = chatMessageRequestDto.getSenderEmail();
-//        this.senderImg = chatMessageRequestDto.getSenderImg();
         this.message = chatMessageRequestDto.getMessage();
         this.createdAt = chatMessageRequestDto.getCreatedAt();
     }
