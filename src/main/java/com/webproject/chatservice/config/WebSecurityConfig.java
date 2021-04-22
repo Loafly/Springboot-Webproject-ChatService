@@ -52,9 +52,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // 그 외 모든 요청은 인증과정 필요
                 .anyRequest().authenticated()
-//                .and()
-//                .exceptionHandling()
-//                .accessDeniedPage("/forbidden")
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class);

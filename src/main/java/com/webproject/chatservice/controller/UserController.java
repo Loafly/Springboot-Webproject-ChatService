@@ -121,12 +121,4 @@ public class UserController {
         return userService.myProfileUpdate(userId, userProfileRequestDto);
     }
 
-//    @GetMapping("/forbidden")
-//    public RedirectView forbidden() {
-//        System.out.println("hello forbidden");
-//        RedirectView redirectView = new RedirectView();
-//        redirectView.setUrl("http://gaemangtalk.site");
-//        return redirectView;
-//    }
-
 }
