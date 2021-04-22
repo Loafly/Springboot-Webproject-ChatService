@@ -19,7 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Service
 public class UserService {
@@ -39,20 +38,9 @@ public class UserService {
         this.mailUtil = mailUtil;
     }
 
-    public List<User> findAll(){
-        return userRepository.findAll();
-    }
-
     public User findById(Long id) {
         User user = userRepository.findById(id).orElseThrow(
                 ()-> new IllegalArgumentException("찾는 유저가 없습니다")
-        );
-        return user;
-    }
-
-    public User findByUsername(String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(
-                () -> new IllegalArgumentException("찾는 유저가 없습니다")
         );
         return user;
     }
@@ -95,12 +83,6 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
         user.setPassword(passwordEncoder.encode(password));
         return user.getId();
-    }
-
-
-    public Long deleteUser(Long id) {
-        userRepository.deleteById(id);
-        return id;
     }
 
     public JsonObject kakaoLogin(String accessToken) {
@@ -154,8 +136,6 @@ public class UserService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         JsonObject jsonObj = new JsonObject();
         jsonObj.addProperty("token", jwtTokenProvider.createToken(userDetails.getUser().getId()));
-        jsonObj.addProperty("username", userDetails.getUser().getUsername());
-        jsonObj.addProperty("userid", userDetails.getUser().getId());
         return jsonObj;
     }
 

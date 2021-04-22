@@ -66,8 +66,6 @@ public class User {
     public User(UserProfileRequestDto userProfileRequestDto) {
         this.username = userProfileRequestDto.getUsername();
         this.email = userProfileRequestDto.getEmail();
-        this.role = userProfileRequestDto.getRole();
-        this.kakaoId = userProfileRequestDto.getKakaoId();
         this.profileUrl = userProfileRequestDto.getProfileUrl();
     }
 

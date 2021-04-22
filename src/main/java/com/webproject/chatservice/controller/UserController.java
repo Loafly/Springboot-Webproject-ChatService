@@ -111,14 +111,19 @@ public class UserController {
     // token 키 값으로 Header 에 실어주시면 된다!!
     @GetMapping("/api/user/profile")
     public User getMyProfile(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return userService.findByUsername(userDetails.getUsername());
+        return userService.findById(userDetails.getUser().getId());
     }
 
     // 마이페이지 프로필 수정
     // username, email, profileurl 만 바꿀 수 있도록 함
     @PutMapping("api/user/profile/{userId}")
-    public User updateMyProfile(@PathVariable Long userId, @RequestBody UserProfileRequestDto userProfileRequestDto) {
-        return userService.myProfileUpdate(userId, userProfileRequestDto);
+    public Object updateMyProfile(@PathVariable Long userId, @Valid @RequestBody UserProfileRequestDto userProfileRequestDto) {
+        try {
+            return userService.myProfileUpdate(userId, userProfileRequestDto);
+        } catch (Exception ignore) {
+            CustomMessageResponse customMessageResponse = new CustomMessageResponse(ignore.getMessage(),HttpStatus.BAD_REQUEST.value());
+            return customMessageResponse.SendResponse();
+        }
     }
 
 }
